@@ -1,0 +1,54 @@
+<div class="wrapper wrapper-full-page">
+  <nav class="navbar navbar-primary navbar-transparent navbar-absolute">
+    <div class="container">
+      <div class="collapse navbar-collapse" id="menu-example">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="">
+            <a href="/pages/login">
+              <i class="material-icons">fingerprint</i> Login
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="full-page register-page" filter-color="black">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-icon" data-background-color="blue">
+              <i class="material-icons">perm_identity</i>
+            </div>
+            <div class="card-content" *ngIf='verifyPage'>
+              <h4 class="card-title">Verify Success</h4>
+              <small class="category"> </small>
+              <strong>Welcome to Sabai Trade</strong>
+              <p>
+                &nbsp;&nbsp;&nbsp;Thank you for trust Sabai Trade and register with us. Please click this link
+                <a href='/pages/login'>www.sabaitrades.com/login</a> to your dashboard. Please use your email and password to log in.
+              </p>
+              <strong>Sincerely yours,</strong>
+              <br>
+              <strong>Sabai Trade Team</strong>
+              <br>
+              <br>
+              <p>
+                © 2018 Sabai Trade is Benchmark of Sabai Trade Company Limited Risk Warning : Trading financial product on margin carries
+                a high level of risk, and may not be suitable for all investors. Before deciding to trade you should carefully
+                consider your investment objectives, level of experience, and risk appetite.
+              </p>
+            </div>
+            <div class="card-content" *ngIf='!verifyPage'>
+              <h1>
+                  <small class="category">Page Not Found</small>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="full-page-background" style="background-image: url(../../../assets/img/register.jpeg) "></div>
+  </div>
+  <hr>
+</div>

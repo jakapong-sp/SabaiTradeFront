@@ -1,0 +1,116 @@
+<div class="wrapper wrapper-full-page">
+    <nav class="navbar navbar-primary navbar-transparent navbar-absolute">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-example">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="menu-example">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class=" active ">
+                        <a href="/pages/register">
+                            <i class="material-icons">person_add</i> Register
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/pages/login">
+                            <i class="material-icons">fingerprint</i> Login
+                        </a>
+                    </li>
+                    <!-- <li class="">
+                        <a href="/pages/lock">
+                            <i class="material-icons">lock_open</i> Lock
+                        </a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="full-page register-page" filter-color="black">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="card card-signup">
+                        <h3 class="card-title text-center">Register</h3>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 com-lg-12">
+                                <form [formGroup]='userForm' (ngSubmit)='signup()'>
+                                    <div class="card-content">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">face</i>
+                                            </span>
+                                            <div class="col-md-6 col-sm-6 com-lg-6">
+                                                <input type="text" class="form-control col-md-6 col-sm-6 com-lg-6" formControlName='firstname' placeholder="firstname...">
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 com-lg-6">
+                                                <input type="text" class="form-control col-md-6 col-sm-6 com-lg-6" formControlName='lastname' placeholder="lastname...">
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">home</i>
+                                            </span>
+                                            <input type="text" formControlName='address' class="form-control" placeholder="Address...">
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">phone</i>
+                                            </span>
+                                            <input type="text" formControlName='telephone' class="form-control" placeholder="Telephone...">
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">email</i>
+                                            </span>
+                                            <input type='email' formControlName='emailSignup' class='form-control' placeholder="Email...">
+
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">lock_outline</i>
+                                            </span>
+                                            <input type='password' formControlName='passwordSignup' class='form-control' placeholder="Password...(min length 6 character must contains letters and numbers)"
+                                                id="passwordSignup" name="passwordSignup">
+                                            <!-- <div *ngIf="!!userForm.controls.passwordSignup.errors" class="form-control alert alert-danger">errer</div> -->
+                                        </div>
+                                        <!-- If you want to add a checkbox to this form, uncomment this code -->
+                                        <!-- <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="optionsCheckboxes" checked> I agree to the
+                                                <a href="#something">terms and conditions</a>.
+                                            </label>
+                                        </div> -->
+                                    </div>
+                                    <div class="footer text-center">
+                                        <!-- <a href="#pablo" class="btn btn-primary btn-round">Submit</a> -->
+                                        <button type='submit' class='btn btn-info' [disabled]="!userForm.valid">
+                                            <i class='fa fa-lock' aria-hidden='true'></i>
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+
+                <p class="copyright pull-right">
+                    &copy; {{ date | date: 'yyyy'}}
+                    <a href="#">Sabai Trade</a>
+                    <!-- , made with love for a better web -->
+                </p>
+            </div>
+        </footer>
+        <div class="full-page-background" style="background-image: url(../../../assets/img/register.jpeg) "></div>
+    </div>
+    <hr>
+</div>

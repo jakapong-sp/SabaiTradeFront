@@ -1,0 +1,114 @@
+<div class="wrapper wrapper-full-page">
+  <nav class="navbar navbar-primary navbar-transparent navbar-absolute">
+  </nav>
+  <div class="full-page register-page" filter-color="black">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-icon" data-background-color="blue">
+              <i class="material-icons">perm_identity</i>
+            </div>
+            <div class="card-content">
+              <h4 class="card-title">Profile
+                <!-- <small class="category">Detail</small> -->
+              </h4>
+              <form>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group label-floating">
+                      <label class="control-label">Fist Name</label>
+                      <input type="text" class="form-control" disabled value="{{ member.firstName }}">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group label-floating">
+                      <label class="control-label">Last Name</label>
+                      <input type="text" class="form-control" disabled value="{{ member.lastName }}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group label-floating">
+                      <label class="control-label">Adress</label>
+                      <input type="text" class="form-control" disabled value="{{ member.address }}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group label-floating">
+                      <label class="control-label">Telephone</label>
+                      <input type="text" class="form-control" disabled value="{{ member.telephone }}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group label-floating">
+                      <label class="control-label">Email address</label>
+                      <input type="email" class="form-control" disabled value="{{ member.email }}">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6 text-center">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                      <div class="fileinput-new thumbnail">
+                        <a href="{{node_static_url}}{{member.imageBookBank}}" target="_blank" *ngIf="hasImageBB">
+                          <img src="{{node_static_url}}{{member.imageBookBank}}">
+                        </a>
+                      </div>
+                      <div class="fileinput-new thumbnail" *ngIf="!hasImageBB">
+                            <img src="../../assets/img/image_placeholder.jpg">
+                        </div>
+                      <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                      <div>
+                        <span class="btn btn-info btn-round btn-file">
+                          <span class="fileinput-new">Select image Book Bank</span>
+                          <span class="fileinput-exists">Change</span>
+                          <input type="file" #fileInputBB name="imageBB" click-type="type1" (change)="getUploadFileBB($event)" class="picupload" multiple=""  [(ngModel)]="member.imageBookBank"
+                            accept="image/*" id="files" style="padding: 20px 0">
+                        </span>
+                        <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput">
+                          <i class="fa fa-times"></i> Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6 text-center">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                      <div class="fileinput-new thumbnail" *ngIf="hasImagePS">
+                        <a href="{{node_static_url}}{{member.imagePassport}}" target="_blank">
+                          <img src="{{node_static_url}}{{member.imagePassport}}">
+                        </a>
+                      </div>
+                      <div class="fileinput-new thumbnail" *ngIf="!hasImagePS">
+                            <img src="../../assets/img/image_placeholder.jpg">
+                        </div>
+                      <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                      <div>
+                        <span class="btn btn-info btn-round btn-file">
+                          <span class="fileinput-new">Select image Passport</span>
+                          <span class="fileinput-exists">Change</span>
+                          <input type="file" #fileInputPS name="imagePS" click-type="type1" (change)="getUploadFilePS($event)" class="picupload" multiple="" [(ngModel)]="member.imagePassport"
+                            accept="image/*" id="files" style="padding: 20px 0">
+                        </span>
+                        <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput">
+                          <i class="fa fa-times"></i> Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-info pull-right" (click)="onSubmit()">Update Profile</button>
+                <div class="clearfix"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="full-page-background" style="background-image: url(../../../assets/img/register.jpeg) "></div>
+  </div>
+  <hr>
+</div>
