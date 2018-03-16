@@ -47,7 +47,6 @@ export class TradesComponent implements OnInit {
   public orderTotal: OrderTotal;
   public orderTotalHis: OrderTotalHistory;
   public txtSize = '0.01';
-  // public myMemberRef = '0001';
   private subjects = new Array<ChannelSubject>();
   private profile: any;
 
@@ -191,23 +190,23 @@ export class TradesComponent implements OnInit {
           `;
         this._ngZone.run(() => {
           if (this.feedBid >= ev.Data.Bid) {
-            // blue
-            this.colorAsk = 'darkgreen';
-            this.clsBtnBid = 'btn btn-success btn-lg';
-          } else {
             // red
             this.colorBid = 'red';
             this.clsBtnBid = 'btn btn-danger btn-lg';
+          } else {
+            // blue
+            this.colorAsk = 'darkgreen';
+            this.clsBtnBid = 'btn btn-success btn-lg';
           }
           if (this.feedAsk >= ev.Data.Ask) {
+            // red
+            this.colorAsk = 'red';
+            this.clsBtnAsk = 'btn btn-danger btn-lg';
+          } else {
             // blue
             // this.colorAsk = '#0277BD';
             this.colorAsk = 'success';
             this.clsBtnAsk = 'btn btn-success btn-lg';
-          } else {
-            // red
-            this.colorAsk = 'red';
-            this.clsBtnAsk = 'btn btn-danger btn-lg';
           }
           if (this.feedBid === '') {
             this.feedBid = parseFloat(ev.Data.Bid).toFixed(2);
