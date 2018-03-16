@@ -1,3 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 & test server
+* Local test
+** local 2 test
