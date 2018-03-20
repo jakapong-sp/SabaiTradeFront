@@ -1,3 +1,0 @@
-# test git
-# from local
-# from local SourceGit
