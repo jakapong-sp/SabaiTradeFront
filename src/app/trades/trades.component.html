@@ -23,7 +23,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-header card-header-text" data-background-color="blue">
-                        <h4>Sell/Buy</h4>
+                        <h4><strong>Sell/Buy</strong></h4> 
                     </div>
                     <div class="card-content text-center">
                         <!-- <p class="category">Sell/Buy</p> -->
@@ -77,8 +77,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group label-floating">
-                                                        <label class="control-label">Symbol</label>
-                                                        <select name="symbol" class="form-control" (change)="onSelectedOrderType($event)">
+                                                        <label class="control-label">Type</label>
+                                                        <select name="Type" class="form-control" (change)="onSelectedOrderType($event)">
                                                             <option value="Instant">Instant Execution</option>
                                                             <option value="Pending">Pending Order</option>
                                                         </select>
@@ -120,18 +120,22 @@
                         </div>
                         <div class="text-center">
                             <input type="hidden" #hdSell [value]='feedBid'>
-                            <button *ngIf="feedBid != '' " [class]="clsBtnBid" data-target="#noticeModal" data-toggle="modal">
-                                <p style="font-size: 14px; text-align: left">Sell</p>
-                                <span [innerHTML]="feedBid.split('.')[0]" style="font-size:25px"></span>
+                            <button *ngIf="feedBid != '' " data-target="#noticeModal" data-toggle="modal" class="btn btn-white btn-lg">
+                                <p style="font-size: 18px; text-align: left">Sell</p>
+                                <div [class]="clsBtnBid">
+                                <span [innerHTML]="feedBid.split('.')[0]" style="font-size:30px"></span>
                                 .
-                                <span [innerHTML]="feedBid.split('.')[1]" style="font-size:40px"></span>
+                                <span [innerHTML]="feedBid.split('.')[1]" style="font-size:45px"></span>
+                                </div>
                             </button>
                             <input type="hidden" #hdBuy [value]='feedAsk'>
-                            <button *ngIf="feedAsk != '' " [class]="clsBtnAsk" data-target="#noticeModal" data-toggle="modal">
-                                <p style="font-size: 14px; text-align: right">Buy</p>
-                                <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:25px"></span>
+                            <button *ngIf="feedAsk != '' " data-target="#noticeModal" data-toggle="modal" class="btn btn-white btn-lg">
+                                <p style="font-size: 18px; text-align: right">Buy</p>
+                                <div [class]="clsBtnAsk">
+                                <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:30px"></span>
                                 .
-                                <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:40px"></span>
+                                <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:45px"></span>
+                            </div>
                             </button>
                         </div>
                         <div class="input-group" style="margin:auto;">
@@ -195,10 +199,10 @@
             <div class="card-content">
                 <ul class="nav nav-pills nav-pills-info">
                     <li class="active">
-                        <a href="#pill1" data-toggle="tab">Trade</a>
+                        <a href="#pill1" data-toggle="tab" style="font-size:16px">Trade</a>
                     </li>
                     <li>
-                        <a href="#pill2" data-toggle="tab">Account History</a>
+                        <a href="#pill2" data-toggle="tab" style="font-size:16px">Account History</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -207,8 +211,8 @@
                             <table class="table">
                                 <thead class="text-primary">
                                     <tr>
-                                        <th>Order</th>
-                                        <th class='order-align' *ngFor="let item of tableData.headerRow">{{ item }}</th>
+                                        <th style="font-weight:bold">Order</th>
+                                        <th style="font-weight:bold" class='order-align' *ngFor="let item of tableData.headerRow">{{ item }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -254,8 +258,8 @@
                             <table class="table">
                                 <thead class="text-primary">
                                     <tr>
-                                        <th>Order</th>
-                                        <th class='order-align' *ngFor="let item of tableDataHis.headerRow">{{ item }}</th>
+                                        <th style="font-weight:bold">Order</th>
+                                        <th style="font-weight:bold" class='order-align' *ngFor="let item of tableDataHis.headerRow">{{ item }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

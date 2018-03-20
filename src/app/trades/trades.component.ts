@@ -26,6 +26,12 @@ class ChannelSubject {
     .order-align {
       text-align:right;
     }
+    .cls-price-up{
+      color:blue;
+    }
+    .cls-price-down{
+      color:red;
+    }
   `],
   providers: [TradesService]
 })
@@ -192,21 +198,24 @@ export class TradesComponent implements OnInit {
           if (this.feedBid >= ev.Data.Bid) {
             // red
             this.colorBid = 'red';
-            this.clsBtnBid = 'btn btn-danger btn-lg';
+            // this.clsBtnBid = 'btn btn-danger btn-lg';
+            this.clsBtnBid = 'cls-price-down';
           } else {
             // blue
             this.colorAsk = 'darkgreen';
-            this.clsBtnBid = 'btn btn-success btn-lg';
+            // this.clsBtnBid = 'btn btn-success btn-lg';
+            this.clsBtnBid = 'cls-price-up';
           }
           if (this.feedAsk >= ev.Data.Ask) {
             // red
             this.colorAsk = 'red';
-            this.clsBtnAsk = 'btn btn-danger btn-lg';
+            // this.clsBtnAsk = 'btn btn-danger btn-lg';
+            this.clsBtnAsk = 'cls-price-down';
           } else {
             // blue
-            // this.colorAsk = '#0277BD';
             this.colorAsk = 'success';
-            this.clsBtnAsk = 'btn btn-success btn-lg';
+            // this.clsBtnAsk = 'btn btn-success btn-lg';
+            this.clsBtnAsk = 'cls-price-up';
           }
           if (this.feedBid === '') {
             this.feedBid = parseFloat(ev.Data.Bid).toFixed(2);
