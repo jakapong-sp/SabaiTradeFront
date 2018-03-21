@@ -30,6 +30,24 @@ export const ROUTES: RouteInfo[] = [
         icontype: 'timeline'
     },
     {
+        path: '/history',
+        title: 'History',
+        type: 'link',
+        icontype: 'tables'
+    },
+    {
+        path: '/deposit',
+        title: 'Deposit',
+        type: 'link',
+        icontype: 'content_paste'
+    },
+    {
+        path: '/withdraw',
+        title: 'Withdraw',
+        type: 'link',
+        icontype: 'pages'
+    },
+    {
         path: '/pages/user',
         title: 'My Profile',
         type: 'link',

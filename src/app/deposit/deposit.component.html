@@ -1,0 +1,44 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <form class="form-horizontal" #depositForm="ngForm" (ngSubmit)="OnSubmit(depositForm)">
+                        <div class="card-header card-header-text" data-background-color="blue">
+                            <h4 class="card-title">Deposit</h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="row">
+                                <label class="col-sm-2 label-on-left"></label>
+                                <div class="col-sm-10">
+                                    <div class="form-group label-floating is-empty">
+                                        <label class="control-label" data-error="Required field!"></label>
+                                        <input class="form-control validate" type="text" placeholder="Amount" name="amountRequest" #amountRequest="ngModel" [(ngModel)]="asset.amountRequest" required autocomplete="off">
+                                        <span class="help-block">minimum 1000 $</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row">
+                                <label class="col-sm-2 label-on-left"></label>
+                                <div class="col-sm-8">
+                                    <div class="form-group label-floating is-empty">
+                                        <input class="form-control validate" type="text" placeholder="Amount" name="amountRequest" #amountRequest="ngModel" [(ngModel)]="asset.amountRequest" required>
+                                        <label data-error="Required field!"></label>
+                                        <span class="help-block">A block of help text that breaks onto a new line.</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <br>
+                            <div class="row">
+                                <label class="col-sm-2 label-on-left"></label>
+                                <div class="col-sm-10">
+                                  <button type="submit" class="btn btn-fill btn-info" [disabled]="!depositForm.valid">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

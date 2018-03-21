@@ -23,7 +23,9 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-header card-header-text" data-background-color="blue">
-                        <h4><strong>Sell/Buy</strong></h4> 
+                        <h4>
+                            <strong>Sell/Buy</strong>
+                        </h4>
                     </div>
                     <div class="card-content text-center">
                         <!-- <p class="category">Sell/Buy</p> -->
@@ -100,8 +102,7 @@
                                                     <div class="form-group label-floating" *ngIf="!orderTypeSelected">
                                                         <label class="control-label">Pending Order</label>
                                                         <div class="col-md-12" style="font-size:25px;">
-                                                                <input class="form-control"  type="number" #pricePending number="true" maxlength="5"
-                                                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode === 0">
+                                                            <input class="form-control" type="number" #pricePending number="true" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode === 0">
                                                         </div>
                                                         <hr>
                                                         <button type="button" class="btn btn-info btn-sm" disabled>Place</button>
@@ -123,19 +124,19 @@
                             <button *ngIf="feedBid != '' " data-target="#noticeModal" data-toggle="modal" class="btn btn-white btn-lg">
                                 <p style="font-size: 18px; text-align: left">Sell</p>
                                 <div [class]="clsBtnBid">
-                                <span [innerHTML]="feedBid.split('.')[0]" style="font-size:30px"></span>
-                                .
-                                <span [innerHTML]="feedBid.split('.')[1]" style="font-size:45px"></span>
+                                    <span [innerHTML]="feedBid.split('.')[0]" style="font-size:35px"></span>
+                                    .
+                                    <span [innerHTML]="feedBid.split('.')[1]" style="font-size:50px"></span>
                                 </div>
                             </button>
                             <input type="hidden" #hdBuy [value]='feedAsk'>
                             <button *ngIf="feedAsk != '' " data-target="#noticeModal" data-toggle="modal" class="btn btn-white btn-lg">
                                 <p style="font-size: 18px; text-align: right">Buy</p>
                                 <div [class]="clsBtnAsk">
-                                <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:30px"></span>
-                                .
-                                <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:45px"></span>
-                            </div>
+                                    <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:35px"></span>
+                                    .
+                                    <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:50px"></span>
+                                </div>
                             </button>
                         </div>
                         <div class="input-group" style="margin:auto;">
@@ -147,7 +148,58 @@
                 </div>
             </div>
         </div>
-
+        <div class="card">
+            <div class="card-header card-header-text" data-background-color="blue">
+                <h4>
+                    <strong>Order List</strong>
+                </h4>
+            </div>
+            <div class="content table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <tr>
+                                <th style="font-weight:bold">Order</th>
+                                <th style="font-weight:bold" class='order-align' *ngFor="let item of tableData.headerRow">{{ item }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of tableData.dataRows">
+                                <td>{{ item[0] }}</td>
+                                <td class='order-align'>{{ item[1] | date: 'yyyy.MM.dd hh:mm:ss' }}</td>
+                                <td class='order-align'>
+                                    <span *ngIf="item[2]== 'Sell'; then thenTemplate; else elseTemplate"></span>
+                                    <ng-template #thenTemplate>
+                                        <span class='label label-danger' style='font-size:7px'>{{ item[2] }}</span>
+                                    </ng-template>
+                                    <ng-template #elseTemplate>
+                                        <span class='label label-info' style='font-size:7px'>{{ item[2] }}</span>
+                                    </ng-template>
+                                </td>
+                                <td class='order-align'>{{ (item[3] !== null) ? (item[3]) : '' }}</td>
+                                <td class='order-align'>{{ item[4] }}</td>
+                                <td class='order-align'>{{ item[5] }}</td>
+                                <td class='order-align'>{{ item[6] }}</td>
+                                <td class='order-align'>{{ item[7] }}</td>
+                                <td class='order-align'>{{ item[8] }}</td>
+                                <td class='order-align'>{{ item[9] }}</td>
+                                <td class='order-align'>{{ item[10] }}</td>
+                                <td class='order-align'>{{ item[11] }}</td>
+                                <td class="td-actions" style="width:4px">
+                                    <button type="button" matTooltip="Close #{{ item[0] }}" [matTooltipPosition]="'above'" class="btn btn-simple">
+                                        <i class="material-icons" (click)="onClose(item[0], item[8])">clear</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr style='background-color:silver'>
+                                <th colspan='11'>{{this.orderTotal.TotalText}}</th>
+                                <th class='order-align' colspan='2'>{{ this.orderTotal.ProfitText }}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+        </div>
         <!-- <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header card-header-text" data-background-color="orange">
@@ -195,7 +247,7 @@
                 </div>
             </div>
         </div> -->
-        <div class="card">
+        <!-- <div class="card">
             <div class="card-content">
                 <ul class="nav nav-pills nav-pills-info">
                     <li class="active">
@@ -297,7 +349,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
     </div>

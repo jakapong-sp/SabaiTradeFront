@@ -34,6 +34,15 @@ export const AppRoutes: Routes = [
         path: 'trades',
         loadChildren: './trades/trades.module#TradesModule'
     }, {
+        path: 'history',
+        loadChildren: './history/history.module#HistoryModule'
+    }, {
+        path: 'deposit',
+        loadChildren: './deposit/deposit.module#DepositModule'
+    }, {
+        path: 'withdraw',
+        loadChildren: './withdraw/withdraw.module#WithdrawModule'
+    }, {
         path: 'charts',
         loadChildren: './charts/charts.module#ChartsModule'
     }, {

@@ -118,7 +118,7 @@
                         <!--If is a single link-->
                         <a [routerLink]="[menuitem.path]" *ngIf="menuitem.type === 'link'">
                             <i class="material-icons">{{menuitem.icontype}}</i>
-                            <p>{{menuitem.title}}</p>
+                            <p style="font-size:18px">{{menuitem.title}}</p>
                         </a>
                         <!--If it have a submenu-->
                         <a data-toggle="collapse" href="#{{menuitem.collapse}}" *ngIf="menuitem.type === 'sub'" (click)="updatePS()">

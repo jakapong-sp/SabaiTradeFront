@@ -25,7 +25,7 @@ export class MemberReviewComponent implements OnInit {
         $.notify({
             icon: 'notifications', message: msg
         }, {
-                type: 'success', timer: 30000, placement: {
+                type: 'success', timer: 1000, placement: {
                     from: from, align: align
                 }
             });

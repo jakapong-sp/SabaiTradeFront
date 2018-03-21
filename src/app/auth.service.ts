@@ -92,7 +92,6 @@ export class AuthService {
         // catch work after show dialog so then show error after
         this.pages.showError(error.message);
       });
-    debugger;
     return this.currentUserId;
   }
 

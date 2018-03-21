@@ -1,0 +1,55 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="card">
+                  <div class="card-header card-header-text" data-background-color="blue">
+                      <h4><strong>History</strong></h4> 
+                  </div>
+                  <div class="card-content">
+                    <div class="content table-responsive">
+                      <table class="table">
+                          <thead class="text-primary">
+                              <tr>
+                                  <th style="font-weight:bold">Order</th>
+                                  <th style="font-weight:bold" class='order-align' *ngFor="let item of tableDataHis.headerRow">{{ item }}</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let item of tableDataHis.dataRows">
+                                  <td>{{ item[0] }}</td>
+                                  <td class='order-align'>{{ item[1] | date: 'yyyy.MM.dd hh:mm:ss' }}</td>
+                                  <td class='order-align'>
+                                      <span *ngIf="item[2]== 'Sell'; then thenTemplate; else elseTemplate"></span>
+                                      <ng-template #thenTemplate>
+                                          <span class='label label-danger' style='font-size:7px'>{{ item[2] }}</span>
+                                      </ng-template>
+                                      <ng-template #elseTemplate>
+                                          <span class='label label-info' style='font-size:7px'>{{ item[2] }}</span>
+                                      </ng-template>
+                                  </td>
+                                  <td class='order-align'>{{ (item[3] !== null) ? (item[3]) : '' }}</td>
+                                  <td class='order-align'>{{ item[4] }}</td>
+                                  <td class='order-align'>{{ item[5] }}</td>
+                                  <td class='order-align'>{{ item[6] }}</td>
+                                  <td class='order-align'>{{ item[7] }}</td>
+                                  <td class='order-align'>{{ item[8] | date: 'yyyy.MM.dd hh:mm:ss'}}</td>
+                                  <td class='order-align'>{{ item[9] }}</td>
+                                  <td class='order-align'>{{ item[10] }}</td>
+                                  <td class='order-align'>{{ item[11] }}</td>
+                              </tr>
+                          </tbody>
+                          <tfoot>
+                              <tr style='background-color:silver'>
+                                  <th colspan='11'>{{ this.orderTotalHis.TotalText }}</th>
+                                  <th class='order-align' colspan='2'>{{ this.orderTotalHis.BalanceText }}</th>
+                              </tr>
+                          </tfoot>
+                      </table>
+                  </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

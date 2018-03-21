@@ -59,6 +59,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SecuredRouteGuard } from './secured-route.guard';
 import { ServerService } from './server.service';
 import { PagesService } from './pages/pages.service';
+import { DepositService } from './deposit/shared/deposit.service';
 
 // Config Firebase
 export const firebaseConfig = {
@@ -129,7 +130,7 @@ export class MaterialModule {}
         AdminLayoutComponent,
         AuthLayoutComponent
     ],
-    providers: [SecuredRouteGuard, ServerService, AngularFireDatabase, AuthService, PagesService],
+    providers: [SecuredRouteGuard, ServerService, AngularFireDatabase, AuthService, PagesService, DepositService],
     bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

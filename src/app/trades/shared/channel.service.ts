@@ -102,7 +102,9 @@ export class ChannelService {
         @Inject('channel.config') private channelConfig: ChannelConfig
     ) {
         if (this.window.$ === undefined || this.window.$.hubConnection === undefined) {
-            throw new Error("The variable '$' or the .hubConnection() function are not defined...please check the SignalR scripts have been loaded properly");
+            throw new Error(`
+            The variable '$' or the .hubConnection() function are not defined...please check the SignalR scripts have been loaded properly
+            `);
         }
 
         // Set up our observables
@@ -157,7 +159,7 @@ export class ChannelService {
             //  for the channel this came in on, and then emit the event
             //  on it. Otherwise we ignore the message.
             //
-            let channelSub = this.subjects.find((x: ChannelSubject) => {
+            const channelSub = this.subjects.find((x: ChannelSubject) => {
                 return x.channel === channel;
             }) as ChannelSubject;
 
