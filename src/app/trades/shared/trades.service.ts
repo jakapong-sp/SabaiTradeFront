@@ -18,15 +18,18 @@ export class TradesService {
 
   constructor(private http: Http) {}
 
-  postOrder(orderType: string, price: number, memberRef: string, size: number, orderSymbol: string) {
+  postOrder(orderType: string, place: boolean, price: number, memberRef: string,
+      size: number, orderSymbol: string, stop: number, take: number) {
     const body = {
       MemberRef: memberRef,
       Type: orderType,
+      Place: place,
       price: price,
       Size: size,
-      Symbol: orderSymbol
+      Symbol: orderSymbol,
+      SL: stop,
+      TP: take
     };
-
     const headerOptions = new Headers({ 'Content-Type': 'application/json' });
     const requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: headerOptions});
     return this.http.post(environment.url_static_api + '/api/orders', body, requestOptions).map(x => x.json());

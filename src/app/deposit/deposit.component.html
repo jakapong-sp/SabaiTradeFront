@@ -10,10 +10,10 @@
                         <div class="card-content">
                             <div class="row">
                                 <label class="col-sm-2 label-on-left"></label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-2">
                                     <div class="form-group label-floating is-empty">
                                         <label class="control-label" data-error="Required field!"></label>
-                                        <input class="form-control validate" type="text" placeholder="Amount" name="amountRequest" #amountRequest="ngModel" [(ngModel)]="asset.amountRequest" required autocomplete="off">
+                                        <input class="form-control validate" style="text-align:center;font-size:30px" type="number" placeholder="Amount" name="amountRequest" #amountRequest="ngModel" [(ngModel)]="asset.amountRequest" required autocomplete="off">
                                         <span class="help-block">minimum 1000 $</span>
                                     </div>
                                 </div>

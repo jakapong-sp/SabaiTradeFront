@@ -6,11 +6,12 @@ import { TradesService } from './shared/trades.service';
 import { debug, isNullOrUndefined } from 'util';
 import { Observable } from 'rxjs/Observable';
 import { TableData } from '../md/md-table/md-table.component';
-import { OrderTotal, OrderTotalHistory } from './shared/trades.model';
+import { OrderTotal, OrderTotalHistory, Order } from './shared/trades.model';
 import { SlicePipe } from '@angular/common/src/pipes';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { CapitalizePipe } from './shared/trades.pipe';
 import { Subject } from 'rxjs/Subject';
+import { NgForm } from '@angular/forms';
 
 declare const $: any;
 
@@ -52,12 +53,17 @@ export class TradesComponent implements OnInit {
   public tableDataHis: TableData;
   public orderTotal: OrderTotal;
   public orderTotalHis: OrderTotalHistory;
-  public txtSize = '0.01';
   private subjects = new Array<ChannelSubject>();
   private profile: any;
+  public txtSize = '0.01';
+  public txtStop = '0.00';
+  public txtTake = '0.00';
+  public txtPlace = '0.00';
 
   private selectedObj: any;
-  public orderTypeSelected: boolean;
+  public placeTypeSelected: boolean;
+  public placeInvalid = false;
+  public closeOrder: TableData[];
 
   showNotification(from: any, align: any, msg: string) {
     // const type = ['', 'info', 'success', 'warning', 'danger', 'rose', 'primary'];
@@ -66,6 +72,15 @@ export class TradesComponent implements OnInit {
       icon: 'notifications', message: msg
     }, {
         type: 'success', timer: 1000, placement: {
+          from: from, align: align
+        }
+      });
+  }
+  showNotificationError(from: any, align: any, msg: string) {
+    $.notify({
+      icon: 'notifications', message: msg
+    }, {
+        type: 'warning', timer: 1000, placement: {
           from: from, align: align
         }
       });
@@ -110,7 +125,7 @@ export class TradesComponent implements OnInit {
       dataRows: []
     };
 
-    this.orderTypeSelected = true;
+    this.placeTypeSelected = true;
     this.profile = JSON.parse(localStorage.getItem('profile'));
     this.orderTotalHis = new OrderTotalHistory();
     this.orderTotal = new OrderTotal();
@@ -229,37 +244,102 @@ export class TradesComponent implements OnInit {
     });
   }
 
-  onAdd(orderType: string, size: number, price: number) {
+  onAdd(orderType: string, place: boolean, size: number, price: number, stop: number, take: number) {
+    // debugger;
+    if (place) {
+      if (orderType === 'Buy') {
+        if (price > this.feedAsk) {
+          this.placeInvalid = true;
+          this.showNotificationError('top', 'right', 'Invalid Price. Please verify operation parameters and try again later.');
+          return false;
+        }
+      } else if (orderType === 'Sell') {
+        if (price < this.feedBid) {
+          this.placeInvalid = true;
+          this.showNotificationError('top', 'right', 'Invalid Price. Please verify operation parameters and try again later.');
+          return false;
+        }
+      }
+    }
     const memberRef = JSON.parse(localStorage.getItem('profile')).userid; // get from session
-    // debugger;
     const OrderSymbol = 'xauusd';
-    this.tradeService.postOrder(orderType, price, memberRef, size, OrderSymbol)
+    this.tradeService.postOrder(orderType, place, price, memberRef, size, OrderSymbol, stop, take)
       .subscribe(data => {
-        this.showNotification('top', 'center', 'Send order success');
+        const msg = '#' + data.orderRef + ' ' + data.type + ' ' + size + ' ' + data.symbol + ' at ' + data.price + ' Successful';
+        this.showNotification('top', 'center', msg);
+        if (place) {
+          $('#noticeModalOrder').modal('hide');
+        }
       });
   }
 
-  onClose(orderRef: string, priceNow: number) {
-    // debugger;
-    this.tradeService.closeOrder(orderRef, priceNow)
+  onClose(closeOrder: TableData, priceNow: number) {
+    this.tradeService.closeOrder(closeOrder[0], priceNow)
       .subscribe(data => {
-        this.showNotification('top', 'center', 'Close order success');
+        const msg = 'Close #' + closeOrder[0] + ' ' + closeOrder[2] + ' ' + closeOrder[3] + ' ' + closeOrder[4] +
+        ' at ' + priceNow + ' Successful';
+        this.showNotification('top', 'center', msg);
       });
   }
 
-  onBlur(val: number) {
-    if (val < 0.1 || val > 8) {
-      this.txtSize = '0.01';
-    }
+  onSizeBlur(val: number) {
+    // if (val < 0.1 || val > 8) {
+    //   this.txtSize = '0.01';
+    // }
   }
 
-  onSelectedOrderType(id: any) {
+  // onSelectedOrderType(id: any) {
+  //   // alert(id.target.value);
+  //   if (id.target.value === 'Instant') {
+  //     this.orderTypeSelected = true;
+  //   } else {
+  //     this.orderTypeSelected = false;
+  //   }
+  // }
+
+  onSelectedPlaceOrderType(id: any) {
     // alert(id.target.value);
-    if (id.target.value === 'Instant') {
-      this.orderTypeSelected = true;
-    }else {
-      this.orderTypeSelected = false;
+    if (id.target.value === 'Buy') {
+      this.placeTypeSelected = true;
+    } else {
+      this.placeTypeSelected = false;
     }
-}
+  }
+
+  onPlaceOrderChange(event, selectPlaceOrderType) {
+    if (event.target.value === '0.01') {
+      if (selectPlaceOrderType === 'Buy') {
+        this.txtPlace = this.feedAsk;
+      } else {
+        this.txtPlace = this.feedBid;
+      }
+    }
+    // debugger;
+    if (selectPlaceOrderType === 'Buy') {
+      if (this.txtPlace > this.feedAsk) {
+        this.placeInvalid = true;
+      }else {
+        this.placeInvalid = false;
+      }
+    } else {
+      if (this.txtPlace < this.feedBid) {
+        this.placeInvalid = true;
+      }else {
+        this.placeInvalid = false;
+      }
+    }
+
+  }
+
+  onPlaceOrderBlur(event, pricePending) {
+    // if (event.target.value === '') {
+    //   event.target.value = '0.00';
+    // }
+  }
+
+  onPlaceAble() {
+    return false;
+  }
+
 
 }

@@ -20,7 +20,7 @@
                                   <td>{{ item[0] }}</td>
                                   <td class='order-align'>{{ item[1] | date: 'yyyy.MM.dd hh:mm:ss' }}</td>
                                   <td class='order-align'>
-                                      <span *ngIf="item[2]== 'Sell'; then thenTemplate; else elseTemplate"></span>
+                                      <span *ngIf="item[2]=='Sell'; then thenTemplate; else elseTemplate"></span>
                                       <ng-template #thenTemplate>
                                           <span class='label label-danger' style='font-size:7px'>{{ item[2] }}</span>
                                       </ng-template>
@@ -35,12 +35,28 @@
                                   <td class='order-align'>{{ item[7] }}</td>
                                   <td class='order-align'>{{ item[8] | date: 'yyyy.MM.dd hh:mm:ss'}}</td>
                                   <td class='order-align'>{{ item[9] }}</td>
-                                  <td class='order-align'>{{ item[10] }}</td>
+                                  <td class='order-align'>
+                                    <!-- <span *ngIf="item[10]=='Deposit'; then thenTemplate; else elseTemplate"></span> -->
+                                    <ng-container *ngIf="item[10]=='Deposit'; then depo"></ng-container>
+                                    <ng-container *ngIf="item[10]=='Withdraw'; then with"></ng-container>
+                                    <ng-container *ngIf="item[10]!=='Deposit' && item[10]!=='Withdraw'; then num"></ng-container>
+
+                                    <ng-template #num>
+                                        <span>{{ item[10] }}</span>
+                                    </ng-template>
+                                    <ng-template #depo>
+                                        <span class='label label-info' style='font-size:7px'>{{ item[10] }}</span>
+                                    </ng-template>
+                                    <ng-template #with>
+                                        <span class='label label-danger' style='font-size:7px'>{{ item[10] }}</span>
+                                    </ng-template>
+                                  </td>
+
                                   <td class='order-align'>{{ item[11] }}</td>
                               </tr>
                           </tbody>
                           <tfoot>
-                              <tr style='background-color:silver'>
+                              <tr style="background-color:silver;font-size:18px">
                                   <th colspan='11'>{{ this.orderTotalHis.TotalText }}</th>
                                   <th class='order-align' colspan='2'>{{ this.orderTotalHis.BalanceText }}</th>
                               </tr>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { DepositService } from './shared/deposit.service';
+import { AppService } from '../app.service';
 import { Asset } from '../models/asset.model';
 
 declare const $: any;
@@ -24,7 +24,7 @@ export class DepositComponent implements OnInit {
       });
   }
 
-  constructor(private ds: DepositService) { }
+  constructor(private app: AppService) { }
 
   ngOnInit() {
     this.asset = {
@@ -49,7 +49,7 @@ export class DepositComponent implements OnInit {
     }
   }
   OnSubmit(form: NgForm) {
-    this.ds.postDeposit(form.value)
+    this.app.postDeposit(form.value)
       .subscribe((data: any) => {
           form.reset();
           this.showNotification('top', 'center', 'Deposit success');
