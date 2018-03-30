@@ -116,6 +116,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!-- <div class="row">
+                                                    <div style="min-height:40px">
+                                                        <span class="category form-category text-center text-rose" *ngIf="!IsTradeInvalid">*Invalid stop loss or take profit</span>
+                                                    </div>
+                                                </div> -->
 
                                                 <div class="nav-center">
                                                     <ul class="nav nav-pills nav-pills-info nav-pills-icons" role="tablist">
@@ -154,8 +159,10 @@
                                                                     </div>
                                                                     <hr>
                                                                     <br>
-                                                                    <button type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid" data-dismiss="modal" (click)="onAdd('Sell',false,size.value,hdSell.value,stop.value,take.value)">Sell</button>
-                                                                    <button type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid" data-dismiss="modal" (click)="onAdd('Buy',false,size.value,hdBuy.value,stop.value,take.value)">Buy</button>
+                                                                    <button type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || size.value == 0 || (take.value != 0 && (take.value + 1) > feedAsk) || (stop.value != 0 && (stop.value - 1) < feedAsk)"
+                                                                        data-dismiss="modal" (click)="onAdd('Sell',false,size.value,hdSell.value,stop.value,take.value)">Sell</button>
+                                                                    <button type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || size.value == 0 || (take.value != 0 && (take.value - 1) < feedBid) || (stop.value != 0 && (stop.value + 1) > feedBid)"
+                                                                        data-dismiss="modal" (click)="onAdd('Buy',false,size.value,hdBuy.value,stop.value,take.value)">Buy</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -181,23 +188,23 @@
                                                                                 autocomplete="off" min="0.00" step="0.01" maxlength="7"
                                                                                 (change)="onPlaceOrderChange($event,selectPlaceOrderType.value)"
                                                                                 (blur)="onPlaceOrderBlur($event, Place.value)">
-
-                                                                            <div style="min-height:50px">
-                                                                                <span class="category form-category text-center text-rose" *ngIf="selectPlaceOrderType.value == 'Sell' && (!(Place.value > feedBid) || Place.value == 0)">*Invalid Price</span>
-                                                                                <span class="category form-category text-center text-rose" *ngIf="selectPlaceOrderType.value == 'Buy' && (!(Place.value < feedAsk) || Place.value == 0)">*Invalid Price</span>
+                                                                            <div style="min-height:40px">
+                                                                                <span class="category form-category text-center text-rose" *ngIf="
+                                                                                (selectPlaceOrderType.value == 'Sell' && Place.value < feedAsk) || 
+                                                                                (selectPlaceOrderType.value == 'Buy' && Place.value > feedBid) || 
+                                                                                Place.value == 0">*Invalid Price
+                                                                                </span>
                                                                             </div>
                                                                         </div>
                                                                         <hr>
                                                                     </div>
-
                                                                     <!-- <button *ngIf="!placeTypeSelected" type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || Place.value === 0 || Place.value === '0.00' || !(Place.value > feedBid)" data-dismiss="modal" name="btnPlace" #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
                                                                     <button *ngIf="placeTypeSelected" type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || Place.value === 0 || Place.value === '0.00' || !(Place.value < feedAsk)" data-dismiss="modal" name="btnPlace" #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
                                                                      -->
-                                                                    <button *ngIf="!placeTypeSelected" type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || Place.value === 0 || Place.value === '0.00'"
+                                                                    <button *ngIf="!placeTypeSelected" type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || Place.value == 0 || size.value == 0 || (selectPlaceOrderType.value == 'Sell' && Place.value < feedAsk) || (take.value != 0 && (take.value + 1) > Place.value) || (stop.value != 0 && (stop.value - 1) < Place.value)"
                                                                         #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
-                                                                    <button *ngIf="placeTypeSelected" type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || Place.value === 0 || Place.value === '0.00'"
+                                                                    <button *ngIf="placeTypeSelected" type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || Place.value == 0 || size.value == 0 || (selectPlaceOrderType.value == 'Buy' && Place.value > feedBid) || (take.value != 0 && (take.value - 1) < Place.value) || (stop.value != 0 && (stop.value + 1) > Place.value)"
                                                                         #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
-
                                                                 </div>
                                                             </div>
                                                         </div>

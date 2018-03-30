@@ -248,13 +248,13 @@ export class TradesComponent implements OnInit {
     // debugger;
     if (place) {
       if (orderType === 'Buy') {
-        if (price > this.feedAsk) {
+        if (price > this.feedBid) {
           this.placeInvalid = true;
           this.showNotificationError('top', 'right', 'Invalid Price. Please verify operation parameters and try again later.');
           return false;
         }
       } else if (orderType === 'Sell') {
-        if (price < this.feedBid) {
+        if (price < this.feedAsk) {
           this.placeInvalid = true;
           this.showNotificationError('top', 'right', 'Invalid Price. Please verify operation parameters and try again later.');
           return false;
@@ -309,20 +309,20 @@ export class TradesComponent implements OnInit {
   onPlaceOrderChange(event, selectPlaceOrderType) {
     if (event.target.value === '0.01') {
       if (selectPlaceOrderType === 'Buy') {
-        this.txtPlace = this.feedAsk;
-      } else {
         this.txtPlace = this.feedBid;
+      } else {
+        this.txtPlace = this.feedAsk;
       }
     }
     // debugger;
     if (selectPlaceOrderType === 'Buy') {
-      if (this.txtPlace > this.feedAsk) {
+      if (this.txtPlace > this.feedBid) {
         this.placeInvalid = true;
       }else {
         this.placeInvalid = false;
       }
     } else {
-      if (this.txtPlace < this.feedBid) {
+      if (this.txtPlace < this.feedAsk) {
         this.placeInvalid = true;
       }else {
         this.placeInvalid = false;
@@ -337,7 +337,7 @@ export class TradesComponent implements OnInit {
     // }
   }
 
-  onPlaceAble() {
+  onTradeInvalid() {
     return false;
   }
 

@@ -31,8 +31,24 @@
                                   <td class='order-align'>{{ (item[3] !== null) ? (item[3]) : '' }}</td>
                                   <td class='order-align'>{{ item[4] }}</td>
                                   <td class='order-align'>{{ item[5] }}</td>
-                                  <td class='order-align'>{{ item[6] }}</td>
-                                  <td class='order-align'>{{ item[7] }}</td>
+                                  <td class='order-align'>
+                                      <span *ngIf="item[6]==item[9]; then SLTemplate; else SLelseTemplate"></span>
+                                      <ng-template #SLTemplate>
+                                          <span class='text-danger'><strong>{{ item[6] }}</strong></span>
+                                      </ng-template>
+                                      <ng-template #SLelseTemplate>
+                                          <span>{{ item[6] }}</span>
+                                      </ng-template>
+                                  </td>
+                                  <td class='order-align'>
+                                        <span *ngIf="item[7]==item[9]; then TPTemplate; else TPelseTemplate"></span>
+                                        <ng-template #TPTemplate>
+                                            <span class='text-success'><strong>{{ item[7] }}</strong></span>
+                                        </ng-template>
+                                        <ng-template #TPelseTemplate>
+                                            <span>{{ item[7] }}</span>
+                                        </ng-template>
+                                  </td>
                                   <td class='order-align'>{{ item[8] | date: 'yyyy.MM.dd hh:mm:ss'}}</td>
                                   <td class='order-align'>{{ item[9] }}</td>
                                   <td class='order-align'>

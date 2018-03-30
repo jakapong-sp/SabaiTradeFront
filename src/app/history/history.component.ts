@@ -153,6 +153,18 @@ export class HistoryComponent implements OnInit {
               item.Profit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             ]);
           }
+          if (item.Status === 'Deposit') {
+            this.tableDataHis.dataRows.push([
+              item.OrderRef, item.CreateDate, item.Type, '', '', '', '',
+              '', '', '', item.Status, item.Profit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            ]);
+          }
+          if (item.Status === 'Withdraw') {
+            this.tableDataHis.dataRows.push([
+              item.OrderRef, item.CreateDate, item.Type, '', '', '', '',
+              '', '', '', item.Status, item.Profit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            ]);
+          }
         });
 
         this.orderTotalHis.BalanceText = this.orderTotalHis.Balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
