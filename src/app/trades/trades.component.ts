@@ -153,7 +153,7 @@ export class TradesComponent implements OnInit {
 
       if (ev.Name === 'Feeds') {
         // debugger;
-        console.log(`onEvent - ${channel} channel`, ev);
+        // console.log(`onEvent - ${channel} channel`, ev);
         this.tableData.dataRows = []; // clear row for new data
         this.tableDataHis.dataRows = []; // clear row for new data
 
@@ -178,18 +178,28 @@ export class TradesComponent implements OnInit {
               item.OrderRef, item.CreateDate, item.Type, '', '', '', '',
               '', '', '', item.Status, item.Profit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             ]);
-            // this.orderTotalHis.Profit += item.Profit;
-          }
-          if (item.Type === 'Buy') { // set price now for calculate
-            item.PriceNow = ev.Data.Bid;
-          } else {
-            item.PriceNow = ev.Data.Ask;
           }
           if (item.Status === 'Pending') {
+            if (item.Type === 'Buy') { // set price now for calculate
+              item.PriceNow = ev.Data.Bid;
+            } else {
+              item.PriceNow = ev.Data.Ask;
+            }
             this.tableData.dataRows.push([
               item.OrderRef, item.CreateDate, item.Type, item.Size.toFixed(2), item.Symbol, item.Price.toFixed(2), item.SL.toFixed(2),
               item.TP.toFixed(2), item.PriceNow.toFixed(2), item.Commission.toFixed(2), item.Swap.toFixed(2),
               item.Profit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            ]);
+          }
+          if (item.Status === 'Place') {
+            if (item.Type === 'Buy') {
+              item.PriceNow = ev.Data.Ask;
+            } else {
+              item.PriceNow = ev.Data.Bid;
+            }
+            this.tableData.dataRows.push([
+              item.OrderRef, item.CreateDate, item.Type === 'Buy' ? 'Buy Limit' : 'Sell Limit', item.Size.toFixed(2), item.Symbol,
+              item.Price.toFixed(2), item.SL.toFixed(2), item.TP.toFixed(2), item.PriceNow.toFixed(2), '', '', ''
             ]);
           }
         });
@@ -197,7 +207,7 @@ export class TradesComponent implements OnInit {
         this.orderTotal.ProfitText = this.orderTotal.Profit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
         this.orderTotal.TotalText = `
           Balance :   ${this.orderTotal.Balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-          | USD  Equity:   ${this.orderTotal.Equity.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
+          USD | Equity:   ${this.orderTotal.Equity.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
           | Margin:   ${this.orderTotal.Margin.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
           | Free margin:   ${this.orderTotal.FreeMargin.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
           `;
@@ -245,16 +255,22 @@ export class TradesComponent implements OnInit {
   }
 
   onAdd(orderType: string, place: boolean, size: number, price: number, stop: number, take: number) {
-    // debugger;
+    // check equity zero
+    if (this.orderTotal.Equity === 0) {
+      this.showNotificationError('top', 'right', 'Quity Zero!!');
+      return false;
+    }
+
+    // validate diabled and validate again
     if (place) {
       if (orderType === 'Buy') {
-        if (price > this.feedBid) {
+        if (price > (parseFloat(this.feedAsk) - 2) && price < parseFloat(this.feedAsk)) {
           this.placeInvalid = true;
           this.showNotificationError('top', 'right', 'Invalid Price. Please verify operation parameters and try again later.');
           return false;
         }
       } else if (orderType === 'Sell') {
-        if (price < this.feedAsk) {
+        if (price < (parseFloat(this.feedBid) + 2) && price > parseFloat(this.feedBid)) {
           this.placeInvalid = true;
           this.showNotificationError('top', 'right', 'Invalid Price. Please verify operation parameters and try again later.');
           return false;
@@ -277,11 +293,19 @@ export class TradesComponent implements OnInit {
     this.tradeService.closeOrder(closeOrder[0], priceNow)
       .subscribe(data => {
         const msg = 'Close #' + closeOrder[0] + ' ' + closeOrder[2] + ' ' + closeOrder[3] + ' ' + closeOrder[4] +
-        ' at ' + priceNow + ' Successful';
+          ' at ' + priceNow + ' Successful';
         this.showNotification('top', 'center', msg);
       });
   }
 
+  onDelete(closeOrder: TableData, priceNow: number) {
+    this.tradeService.deleteOrder(closeOrder[0], priceNow)
+      .subscribe(data => {
+        const msg = 'Delete #' + closeOrder[0] + ' ' + closeOrder[2] + ' ' + closeOrder[3] + ' ' + closeOrder[4] +
+          ' at ' + priceNow + ' Successful';
+        this.showNotification('top', 'center', msg);
+      });
+  }
   onSizeBlur(val: number) {
     // if (val < 0.1 || val > 8) {
     //   this.txtSize = '0.01';
@@ -309,22 +333,22 @@ export class TradesComponent implements OnInit {
   onPlaceOrderChange(event, selectPlaceOrderType) {
     if (event.target.value === '0.01') {
       if (selectPlaceOrderType === 'Buy') {
-        this.txtPlace = this.feedBid;
+        this.txtPlace = (parseFloat(this.feedAsk) - 2).toString();
       } else {
-        this.txtPlace = this.feedAsk;
+        this.txtPlace = (parseFloat(this.feedBid) + 2).toString();
       }
     }
     // debugger;
     if (selectPlaceOrderType === 'Buy') {
       if (this.txtPlace > this.feedBid) {
         this.placeInvalid = true;
-      }else {
+      } else {
         this.placeInvalid = false;
       }
     } else {
       if (this.txtPlace < this.feedAsk) {
         this.placeInvalid = true;
-      }else {
+      } else {
         this.placeInvalid = false;
       }
     }

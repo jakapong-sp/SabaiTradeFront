@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AppService } from '../app.service';
 import { Asset } from '../models/asset.model';
+import { isNumeric } from 'rxjs/util/isNumeric';
 
 declare const $: any;
 declare var swal: any;
@@ -54,5 +55,20 @@ export class DepositComponent implements OnInit {
           form.reset();
           this.showNotification('top', 'center', 'Deposit success');
       });
+  }
+
+  setFormatCurrency(amt: string) {
+    amt = amt.replace(/[^\d\.\-\ ]/g, '');
+    if (isNumeric(amt) === false) { return ''; };
+    if (amt.length > 3) {
+      const numVal = parseInt(amt, 10);
+      amt = numVal.toString().split('').reverse().reduce(function (acc, amt, i, orig) {
+        return amt + (i && !(i % 3) ? ',' : '') + acc;
+      }, '');
+    }
+    return amt;
+  }
+
+  onKeyup(event) {
   }
 }

@@ -15,7 +15,7 @@ import { environment } from 'environments/environment';
         MaterialModule,
         FormsModule
     ],
-    declarations: [DepositComponent ]
+    declarations: [DepositComponent]
 })
 
 export class DepositModule {}

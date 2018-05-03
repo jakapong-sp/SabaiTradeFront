@@ -7,6 +7,14 @@ import { WithdrawComponent } from './withdraw.component';
 import { WithdrawRoutes } from './withdraw.routing';
 import { FormsModule } from '@angular/forms';
 import { environment } from 'environments/environment';
+import { ChannelService,  ChannelConfig,  SignalrWindow } from '../trades/shared/channel.service';
+
+export function createChannelConfig() {
+    const channelConfig = new ChannelConfig();
+    channelConfig.url = environment.url_feed;
+    channelConfig.hubName = 'EventHub';
+    return channelConfig;
+  }
 
 @NgModule({
     imports: [
@@ -15,7 +23,12 @@ import { environment } from 'environments/environment';
         MaterialModule,
         FormsModule
     ],
-    declarations: [WithdrawComponent ]
+    declarations: [WithdrawComponent ],
+    providers: [
+      ChannelService,
+      { provide: SignalrWindow, useValue: window },
+      { provide: 'channel.config', useFactory: createChannelConfig }
+    ]
 })
 
 export class WithdrawModule {}

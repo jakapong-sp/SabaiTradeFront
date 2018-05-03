@@ -40,7 +40,7 @@ postWithdraw(asset: Asset) {
     const body = {
         MemberRef: memberref,
         AssetType: 'Withdraw',
-        amountRequest: asset.amountRequest,
+        amountRequest: asset.amountRequest.replace(',', ''),
         createBy: memberref
     };
     const headerOptions = new Headers({ 'Content-Type': 'application/json' });

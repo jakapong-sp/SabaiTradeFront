@@ -60,6 +60,7 @@ import { SecuredRouteGuard } from './secured-route.guard';
 import { ServerService } from './server.service';
 import { PagesService } from './pages/pages.service';
 import { AppService } from './app.service';
+import { PipeNumberPipe } from './pipe-number.pipe';
 
 // Config Firebase
 export const firebaseConfig = {
@@ -105,7 +106,7 @@ export const firebaseConfig = {
     MatToolbarModule,
     MatTooltipModule
   ],
-  declarations: []
+  declarations: [PipeNumberPipe]
 })
 export class MaterialModule {}
 

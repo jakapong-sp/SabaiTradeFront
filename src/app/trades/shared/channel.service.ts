@@ -185,7 +185,6 @@ export class ChannelService {
         //  a client subscried to it the start sequence would be triggered
         //  again since it's a cold observable.
         //
-        // debugger;
         this.hubConnection.start()
             .done(() => {
                 this.startingSubject.next();
@@ -218,7 +217,6 @@ export class ChannelService {
         //  caller, so we need to call the server method to join the channel
         //  and then create an observable that the caller can use to received
         //  messages.
-        //
 
         // Now we just create our internal object so we can track this subject
         //  in case someone else wants it too

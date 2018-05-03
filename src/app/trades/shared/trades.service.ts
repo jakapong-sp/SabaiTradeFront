@@ -48,4 +48,19 @@ export class TradesService {
       .put(environment.url_static_api + '/api/orders/' + orderRef, body, requestOptions)
       .map(res => res.json());
   }
+
+  deleteOrder(orderRef: string, priceNow: number) {
+    const body = {
+      OrderRef: orderRef,
+      PriceNow: priceNow,
+      Type: 'delete'
+    };
+
+    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+    const requestOptions = new RequestOptions({method: RequestMethod.Put, headers: headerOptions});
+    return this.http
+      .put(environment.url_static_api + '/api/orders/' + orderRef, body, requestOptions)
+      .map(res => res.json());
+  }
+
 }

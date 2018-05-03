@@ -159,9 +159,9 @@
                                                                     </div>
                                                                     <hr>
                                                                     <br>
-                                                                    <button type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || size.value == 0 || (take.value != 0 && (take.value + 1) > feedAsk) || (stop.value != 0 && (stop.value - 1) < feedAsk)"
+                                                                    <button type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || size.value == 0 || (take.value != 0 && (take.value + 2) > feedBid) || (stop.value != 0 && (stop.value - 2) < feedBid)"
                                                                         data-dismiss="modal" (click)="onAdd('Sell',false,size.value,hdSell.value,stop.value,take.value)">Sell</button>
-                                                                    <button type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || size.value == 0 || (take.value != 0 && (take.value - 1) < feedBid) || (stop.value != 0 && (stop.value + 1) > feedBid)"
+                                                                    <button type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || size.value == 0 || (take.value != 0 && (take.value - 2) < feedAsk) || (stop.value != 0 && (stop.value + 2) > feedAsk)"
                                                                         data-dismiss="modal" (click)="onAdd('Buy',false,size.value,hdBuy.value,stop.value,take.value)">Buy</button>
                                                                 </div>
                                                             </div>
@@ -190,8 +190,8 @@
                                                                                 (blur)="onPlaceOrderBlur($event, Place.value)">
                                                                             <div style="min-height:40px">
                                                                                 <span class="category form-category text-center text-rose" *ngIf="
-                                                                                (selectPlaceOrderType.value == 'Sell' && Place.value < feedAsk) || 
-                                                                                (selectPlaceOrderType.value == 'Buy' && Place.value > feedBid) || 
+                                                                                (selectPlaceOrderType.value == 'Buy' && Place.value > (feedAsk - 2) && Place.value < feedAsk) || 
+                                                                                (selectPlaceOrderType.value == 'Sell' && Place.value < (feedBid - (-2)) && Place.value > feedBid) ||
                                                                                 Place.value == 0">*Invalid Price
                                                                                 </span>
                                                                             </div>
@@ -201,9 +201,9 @@
                                                                     <!-- <button *ngIf="!placeTypeSelected" type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || Place.value === 0 || Place.value === '0.00' || !(Place.value > feedBid)" data-dismiss="modal" name="btnPlace" #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
                                                                     <button *ngIf="placeTypeSelected" type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || Place.value === 0 || Place.value === '0.00' || !(Place.value < feedAsk)" data-dismiss="modal" name="btnPlace" #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
                                                                      -->
-                                                                    <button *ngIf="!placeTypeSelected" type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || Place.value == 0 || size.value == 0 || (selectPlaceOrderType.value == 'Sell' && Place.value < feedAsk) || (take.value != 0 && (take.value + 1) > Place.value) || (stop.value != 0 && (stop.value - 1) < Place.value)"
+                                                                    <button *ngIf="!placeTypeSelected" type="button" class="btn btn-danger btn-lg" [disabled]="!tradeForm.valid || Place.value == 0 || size.value == 0 || (selectPlaceOrderType.value == 'Sell' && Place.value < feedBid-(-2)) && Place.value > feedBid || (take.value != 0 && (take.value + 2) > Place.value) || (stop.value != 0 && (stop.value - 2) < Place.value)"
                                                                         #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
-                                                                    <button *ngIf="placeTypeSelected" type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || Place.value == 0 || size.value == 0 || (selectPlaceOrderType.value == 'Buy' && Place.value > feedBid) || (take.value != 0 && (take.value - 1) < Place.value) || (stop.value != 0 && (stop.value + 1) > Place.value)"
+                                                                    <button *ngIf="placeTypeSelected" type="button" class="btn btn-info btn-lg" [disabled]="!tradeForm.valid || Place.value == 0 || size.value == 0 || (selectPlaceOrderType.value == 'Buy' && Place.value > (feedAsk - 2) && Place.value < feedAsk) || (take.value != 0 && (take.value - 2) < Place.value) || (stop.value != 0 && (stop.value + 2) > Place.value)"
                                                                         #btnPlace (click)="onAdd(selectPlaceOrderType.value,true,size.value,Place.value,stop.value,take.value)">Place</button>
                                                                 </div>
                                                             </div>
@@ -252,6 +252,31 @@
                                     </div>
                                     <div class="modal-footer text-center">
                                         <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" (click)="onClose(closeOrder, closeOrder[2] === 'Buy' ? feedBid : feedAsk )">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="noticeModalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-notice">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            <i class="material-icons">clear</i>
+                                        </button>
+                                        <h3 class="modal-title" id="myModalLabel">Delete Place?</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="instruction" style="font-size:20px">
+                                            <p *ngIf="closeOrder != null && closeOrder[2] == 'Buy Limit'" class="text-danger">
+                                                Delete #{{closeOrder[0]}}&nbsp;{{closeOrder[2]}}&nbsp;{{closeOrder[3]}}&nbsp;{{closeOrder[4]}}&nbsp;at&nbsp;{{feedBid}}
+                                            </p>
+                                            <p *ngIf="closeOrder != null && closeOrder[2] == 'Sell Limit'" class="text-danger">
+                                                Delete #{{closeOrder[0]}}&nbsp;{{closeOrder[2]}}&nbsp;{{closeOrder[3]}}&nbsp;{{closeOrder[4]}}&nbsp;at&nbsp;{{feedAsk}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer text-center">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" (click)="onDelete(closeOrder, closeOrder[2] === 'Buy Limit' ? feedBid : feedAsk )">Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -305,12 +330,23 @@
                         <tr *ngFor="let item of tableData.dataRows">
                             <td>{{ item[0] }}</td>
                             <td class='order-align'>{{ item[1] | date: 'yyyy.MM.dd hh:mm:ss' }}</td>
-                            <td class='order-align'>
-                                <span *ngIf="item[2]== 'Sell'; then thenTemplate; else elseTemplate"></span>
+                            <!-- <td class='order-align'>
+                                <span *ngIf="item[2] == 'Sell' || item[2] == 'Sell Limit'; then thenTemplate; else elseTemplate"></span>
                                 <ng-template #thenTemplate>
                                     <span class='label label-danger' style='font-size:7px'>{{ item[2] }}</span>
                                 </ng-template>
                                 <ng-template #elseTemplate>
+                                    <span class='label label-info' style='font-size:7px'>{{ item[2] }}</span>
+                                </ng-template>
+                            </td> -->
+                            <td class='order-align'>
+                                <ng-container *ngIf="item[2]=='Buy' || item[2] == 'Buy Limit'; then buy"></ng-container>
+                                <ng-container *ngIf="item[2]=='Sell' || item[2] == 'Sell Limit'; then sell"></ng-container>
+
+                                <ng-template #sell>
+                                    <span class='label label-danger' style='font-size:7px'>{{ item[2] }}</span>
+                                </ng-template>
+                                <ng-template #buy>
                                     <span class='label label-info' style='font-size:7px'>{{ item[2] }}</span>
                                 </ng-template>
                             </td>
@@ -323,13 +359,28 @@
                             <td class='order-align'>{{ item[9] }}</td>
                             <td class='order-align'>{{ item[10] }}</td>
                             <td class='order-align'>{{ item[11] }}</td>
-                            <td class="td-actions" style="width:4px">
+                            <!-- <td class="td-actions" style="width:4px">
                                 <button type="button" matTooltip="Close #{{ item[0] }}" [matTooltipPosition]="'above'" class="btn btn-simple" data-toggle="modal"
                                     data-target="#noticeModalClose">
-                                    <!-- <i class="material-icons" (click)="onClose(item[0], item[8])">clear</i> -->
                                     <i class="material-icons" (click)="closeOrder = item">clear</i>
                                 </button>
+                            </td> -->
+                            <td class="td-actions" style="width:4px">
+                                <ng-container *ngIf="item[2]=='Sell Limit' || item[2] == 'Buy Limit'; then limit"></ng-container>
+                                <ng-container *ngIf="item[2]=='Sell' || item[2] == 'Buy'; then buysell"></ng-container>
 
+                                <ng-template #buysell>
+                                    <button type="button" matTooltip="Close #{{ item[0] }}" [matTooltipPosition]="'above'" class="btn btn-simple" data-toggle="modal"
+                                    data-target="#noticeModalClose">
+                                    <i class="material-icons" (click)="closeOrder = item">clear</i>
+                                </button>
+                                </ng-template>
+                                <ng-template #limit>
+                                    <button type="button" matTooltip="Delete #{{ item[0] }}" [matTooltipPosition]="'above'" class="btn btn-simple" data-toggle="modal"
+                                    data-target="#noticeModalDelete">
+                                    <i class="material-icons" (click)="closeOrder = item">clear</i>
+                                </button>
+                                </ng-template>
                             </td>
                         </tr>
                     </tbody>
