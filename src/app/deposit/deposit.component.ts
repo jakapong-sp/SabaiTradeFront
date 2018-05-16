@@ -49,12 +49,25 @@ export class DepositComponent implements OnInit {
       form.reset();
     }
   }
+
   OnSubmit(form: NgForm) {
-    this.app.postDeposit(form.value)
-      .subscribe((data: any) => {
+    swal({
+      title: 'Are you sure?',
+      text: '',
+      type: '',
+      showCancelButton: true,
+      confirmButtonClass: 'btn btn-success',
+      cancelButtonClass: 'btn btn-danger',
+      confirmButtonText: 'OK',
+      buttonsStyling: false
+    }).then((result) => {
+      this.app.postDeposit(form.value)
+        .subscribe((data: any) => {
           form.reset();
           this.showNotification('top', 'center', 'Deposit success');
-      });
+        });
+    }
+    );
   }
 
   setFormatCurrency(amt: string) {
