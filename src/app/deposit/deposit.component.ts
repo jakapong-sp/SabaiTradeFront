@@ -9,8 +9,7 @@ declare var swal: any;
 
 @Component({
   selector: 'app-deposit',
-  templateUrl: './deposit.component.html',
-  styleUrls: ['./deposit.component.scss']
+  templateUrl: './deposit.component.html'
 })
 export class DepositComponent implements OnInit {
   asset: Asset;
