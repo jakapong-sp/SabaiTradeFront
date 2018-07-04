@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                 <div class="category form-category text-center text-rose" *ngIf="isError">email or password is not correct</div>
+                                 <div class="category form-category text-center text-rose" *ngIf="errorMsg">{{ this.errorMsg }}</div>
                           
                                 <div class="footer text-center">
                                     <button type="submit" class="btn btn-info btn-simple btn-wd btn-lg">Log in</button>
@@ -106,7 +106,7 @@
                 </nav> -->
                 <p class="copyright pull-right">
                     &copy; {{ date | date: 'yyyy'}}
-                    <a href="#">Sabai Trade</a>
+                    <a href="#">Sabai Plus</a>
                 </p>
             </div>
         </footer>

@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { ChannelService, ConnectionState, ChannelEvent } from './shared/channel.service';
 import * as Chartist from 'chartist';
 import { Http, Response } from '@angular/http';
@@ -12,6 +12,9 @@ import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from
 import { CapitalizePipe } from './shared/trades.pipe';
 import { Subject } from 'rxjs/Subject';
 import { NgForm } from '@angular/forms';
+import { Chart } from 'chart.js';
+import {ElementRef} from '@angular/core';
+import 'rxjs/add/operator/map';
 
 declare const $: any;
 
@@ -37,7 +40,7 @@ class ChannelSubject {
   providers: [TradesService]
 })
 
-export class TradesComponent implements OnInit {
+export class TradesComponent implements OnInit, AfterViewInit {
 
   connectionState$: Observable<string>;
   public feedBid: any = '';
@@ -47,7 +50,7 @@ export class TradesComponent implements OnInit {
   public clsBtnBid: String = '';
   public clsBtnAsk: String = '';
 
-  private channel = 'tasks';
+  // private channel = 'tasks';
   private eventName: string;
   public tableData: TableData;
   public tableDataHis: TableData;
@@ -64,6 +67,10 @@ export class TradesComponent implements OnInit {
   public placeTypeSelected: boolean;
   public placeInvalid = false;
   public closeOrder: TableData[];
+
+  chart = [];
+  chartBid = [];
+  chartAsk = [];
 
   showNotification(from: any, align: any, msg: string) {
     // const type = ['', 'info', 'success', 'warning', 'danger', 'rose', 'primary'];
@@ -85,13 +92,46 @@ export class TradesComponent implements OnInit {
         }
       });
   }
+  startAnimationForLineChart(chart: any) {
+    let seq: any, delays: any, durations: any;
+    seq = 0;
+    delays = 80;
+    durations = 500;
+    chart.on('draw', function(data: any) {
+
+      if (data.type === 'line' || data.type === 'area') {
+        data.element.animate({
+          d: {
+            begin: 600,
+            dur: 700,
+            from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+            to: data.path.clone().stringify(),
+            easing: Chartist.Svg.Easing.easeOutQuint
+          }
+        });
+      } else if (data.type === 'point') {
+            seq++;
+            data.element.animate({
+              opacity: {
+                begin: seq * delays,
+                dur: durations,
+                from: 0,
+                to: 1,
+                easing: 'ease'
+              }
+            });
+        }
+    });
+    seq = 0;
+}
 
   constructor(
     private channelService: ChannelService,
     private _ngZone: NgZone,
-    private _signalRService: ChannelService,
+    // private _signalRService: ChannelService,
     private http: Http,
-    private tradeService: TradesService
+    private tradeService: TradesService,
+    private elementRef: ElementRef
   ) {
     // const script = document.createElement('script');
     // script.src = 'assets/js/jquery.signalr-2.2.2.min.js';
@@ -115,7 +155,44 @@ export class TradesComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit() {
+    // this.chart = new Chart('canvas', {
+    //   type: 'line',
+    //   data: {
+    //     labels: [1485717216, 1485747216, 1485787216],
+    //     datasets: [
+    //       {
+    //         data: [272.946, 275.946, 279.946],
+    //         borderColor: "#3cba9f",
+    //         fill: false
+    //       },
+    //       { 
+    //         data: [273.946, 276.946, 280.946],
+    //         borderColor: "#ffcc00",
+    //         fill: false
+    //       },
+    //     ]
+    //   },
+    //   options: {
+    //     legend: {
+    //       display: false
+    //     },
+    //     scales: {
+    //       xAxes: [{
+    //         display: true
+    //       }],
+    //       yAxes: [{
+    //         display: true
+    //       }],
+    //     }
+    //   }
+    // });
+  }
   ngOnInit() {
+    // this.tradeService.dailyForecast().subscribe(res => {
+    //   console.log(res);
+    // });
+
     this.tableData = {
       headerRow: ['Time', 'Type', 'Size', 'Symbol', 'Price', 'S/L', 'T/P', 'Price', 'Comm', 'Swap', 'Profit', ''],
       dataRows: []
@@ -133,7 +210,6 @@ export class TradesComponent implements OnInit {
 
     this.channelService.sub(this.profile.userid).subscribe(
       (x: ChannelEvent) => {
-        // debugger;
         switch (x.Name) {
           case this.eventName: {
             console.log(x.Name);
@@ -144,19 +220,73 @@ export class TradesComponent implements OnInit {
         console.warn('Attempt to join channel failed!', error);
       }
     );
+    let dataDailySalesChart = {
+        labels: [], series: [[]]
+    };
+    let optionsDailySalesChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+            tension: 20
+        }),
+        low: 0,
+        high: 0,
+        chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
+    };
+    let dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+    this.startAnimationForLineChart(dailySalesChart);
 
     this.channelService.hubProxy.on('onEvent', (channel: string, ev: ChannelEvent) => {
       // debugger;
       // this.profile = JSON.parse(localStorage.getItem('profile'));
       // console.log(this.profile.userid);
 
-
       if (ev.Name === 'Feeds') {
         // debugger;
         // console.log(`onEvent - ${channel} channel`, ev);
+
+        // Chartis
+        this.chartBid.push(ev.Data.Bid);
+        this.chartAsk.push(ev.Data.Ask);
+        if (this.chartBid.length > 6 && this.chartAsk.length > 6) {
+           this.chartBid.splice(0, 1);
+           this.chartAsk.splice(0, 1);
+        }
+
+        dataDailySalesChart = {
+          labels: ['', '', '', '', '', ''],
+          series: [
+            this.chartBid, this.chartAsk
+          ]
+        };
+        optionsDailySalesChart = {
+          lineSmooth: Chartist.Interpolation.cardinal({
+              tension: 20
+          }),
+          low: ev.Data.Bid - 1,
+          high: ev.Data.Ask + 1,
+          chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
+      };
+        dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+        // this.startAnimationForLineChart(dailySalesChart);
+        const optionsColouredBarsChart: any = {
+          lineSmooth: Chartist.Interpolation.cardinal({
+              tension: 10
+          }),
+          axisY: {
+              showGrid: true,
+              offset: 40
+          },
+          axisX: {
+              showGrid: false,
+          },
+          low: 0,
+          high: 1000,
+          showPoint: true,
+          height: '300px'
+        };
+
+
         this.tableData.dataRows = []; // clear row for new data
         this.tableDataHis.dataRows = []; // clear row for new data
-
         this.orderTotal.Profit = ev.Folio.ProfitPending; this.orderTotal.Balance = ev.Folio.Balance;
         this.orderTotal.Equity = ev.Folio.Equity; this.orderTotal.Margin = ev.Folio.Margin; this.orderTotal.FreeMargin = ev.Folio.Free;
 
@@ -219,7 +349,7 @@ export class TradesComponent implements OnInit {
           |  Deposit:    ${this.orderTotalHis.Deposit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
           |  Withdrawal:    ${this.orderTotalHis.Withdrawal.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
           `;
-        this._ngZone.run(() => {
+          this._ngZone.run(() => {
           if (this.feedBid >= ev.Data.Bid) {
             // red
             this.colorBid = 'red';
@@ -352,18 +482,13 @@ export class TradesComponent implements OnInit {
         this.placeInvalid = false;
       }
     }
-
   }
 
   onPlaceOrderBlur(event, pricePending) {
-    // if (event.target.value === '') {
-    //   event.target.value = '0.00';
-    // }
   }
 
   onTradeInvalid() {
     return false;
   }
-
 
 }

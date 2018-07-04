@@ -1,14 +1,14 @@
 export class Asset {
-    memberRef: string;
-    assetRef: string;
-    assetType: string;
-    amount: string;
-    amountRequest: string;
-    status: string;
-    createDate: Date;
-    createBy: string;
-    approve1Date: Date;
-    approve1By: string;
-    approve2Date: Date;
-    approve2By: string;
+    MemberRef: string;
+    AssetRef: string;
+    AssetType: string;
+    Amount: string;
+    AmountRequest: string;
+    Status: string;
+    CreateDate: string;
+    CreateBy: string;
+    Approve1Date: string;
+    Approve1By: string;
+    Approve2Date: string;
+    Approve2By: string;
 }

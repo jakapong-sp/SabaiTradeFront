@@ -18,6 +18,7 @@ app.use(function (req, res, next) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false })); //for postmanform
   app.use('/api', require('./api'));// import module
+  // app.use('/api-member', require('./api-member'));// import module
   
   
   // app.use(express.static(path.join(__dirname, './uploaded_files')));

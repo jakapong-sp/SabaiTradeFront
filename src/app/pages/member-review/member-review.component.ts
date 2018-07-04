@@ -70,21 +70,18 @@ export class MemberReviewComponent implements OnInit {
         });
     }
 
-
     getUploadFileBB(event) {
         const formData = new FormData();
         formData.append('filetoupload', event.target.files[0]);
         this.server.getUploadFile(formData).subscribe(result => {
-            console.log(result[0].name);
-            this.member.imageBookBank = result[0].name;
+            this.member.imageBookBank = result.statusText;
         });
     }
     getUploadFilePS(event) {
         const formData = new FormData();
         formData.append('filetoupload', event.target.files[0]);
         this.server.getUploadFile(formData).subscribe(result => {
-            console.log(result[0].name);
-            this.member.imagePassport = result[0].name;
+            this.member.imagePassport = result.statusText;
         });
     }
 }

@@ -35,6 +35,7 @@ export class UserComponent implements OnInit {
 
         // });
         this.memberRef = JSON.parse(localStorage.getItem('profile')).userid;
+        debugger;
         this.pages.getMember(this.memberRef).subscribe(data => {
             if (data.imagePassport === null || data.imagePassport === '') {
                 this.hasImagePS = false;

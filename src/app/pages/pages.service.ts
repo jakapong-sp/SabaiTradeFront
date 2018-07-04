@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import {Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/catch';
+// import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/observable/throw';
 import { environment } from 'environments/environment';
 
 import { Router } from '@angular/router';
@@ -96,7 +98,8 @@ export class PagesService {
         const headerOptions = new Headers({ 'Content-Type': 'application/json' });
         const requestOptions = new RequestOptions({method: RequestMethod.Get, headers: headerOptions });
         return this.http
-        .get(environment.url_static_api + '/api/members/login|' + email + '|' + password, requestOptions).map(x => x.json());
+        .get(environment.url_static_api + '/api/members/login|' + email + '|' + password, requestOptions)
+        .map(x => x.json()).catch(this.handleError);
     }
 
     getMember2(id: string) {
@@ -105,5 +108,30 @@ export class PagesService {
         return this.http.get(environment.url_static_api + '/api/members/' + id, requestOptions).map(x => x.json());
     }
 
+    private handleError(error: any) {
+        // return Observable.throw(error.json() || 'Server Error');
+        return Observable.throw('Server Error');
+    }
+
+  // new api (nodejs)
+    registerMember(firstname: string, lastname: string, address: string, email: string, telephone: string, password: string) {
+    const body = {
+        FirstName: firstname,
+        LastName: lastname,
+        Address: address,
+        Email: email,
+        Telephone: telephone,
+        Password: password
+    };
+    const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+    const requestOptions = new RequestOptions({
+      method: RequestMethod.Post,
+      headers: headerOptions
+    });
+    return this.http
+      .post(environment.node_static_url + '/api/member', body, requestOptions)
+      .map(x => x.json())
+      .catch(this.handleError);
+  }
 
 }

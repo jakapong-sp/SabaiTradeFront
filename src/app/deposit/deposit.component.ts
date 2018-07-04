@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AppService } from '../app.service';
+import { ServerService } from '../server.service';
 import { Asset } from '../models/asset.model';
 import { isNumeric } from 'rxjs/util/isNumeric';
 
@@ -13,7 +14,7 @@ declare var swal: any;
 })
 export class DepositComponent implements OnInit {
   asset: Asset;
-
+  errorMsg: string;
   showNotification(from: any, align: any, msg: string) {
     $.notify({
       icon: 'notifications', message: msg
@@ -24,52 +25,57 @@ export class DepositComponent implements OnInit {
       });
   }
 
-  constructor(private app: AppService) { }
+  constructor(private server: ServerService) { }
 
   ngOnInit() {
     this.asset = {
-      amount: '',
-      amountRequest: '',
-      memberRef: '',
-      assetRef: '',
-      assetType: '',
-      status: '',
-      createBy: '',
-      createDate: null,
-      approve1By: '',
-      approve1Date: null,
-      approve2By: '',
-      approve2Date: null
+      Amount: '',
+      AmountRequest: '',
+      MemberRef: '',
+      AssetRef: '',
+      AssetType: '',
+      Status: '',
+      CreateBy: '',
+      CreateDate: null,
+      Approve1By: '',
+      Approve1Date: null,
+      Approve2By: '',
+      Approve2Date: null
     };
     this.resetForm();
   }
   resetForm(form?: NgForm) {
+    debugger;
     if (form != null) {
       form.reset();
     }
   }
 
   OnSubmit(form: NgForm) {
-    swal({
-      title: 'Are you sure?',
-      text: '',
-      type: '',
-      showCancelButton: true,
-      confirmButtonClass: 'btn btn-success',
-      cancelButtonClass: 'btn btn-danger',
-      confirmButtonText: 'OK',
-      buttonsStyling: false
-    }).then((result) => {
-      this.app.postDeposit(form.value)
-        .subscribe((data: any) => {
-          form.reset();
-          this.showNotification('top', 'center', 'Deposit success');
-        });
+      debugger;
+    this.server.postDeposit(form.value).subscribe((data: any) => {
+      form.reset();
+      this.showNotification('top', 'center', 'Deposit success');
+    }, error => {
+      this.errorMsg = <any>error;
     }
-    );
+  );
+    // swal({
+    //   title: 'Are you sure?',
+    //   text: '',
+    //   type: '',
+    //   showCancelButton: true,
+    //   confirmButtonClass: 'btn btn-success',
+    //   cancelButtonClass: 'btn btn-danger',
+    //   confirmButtonText: 'OK',
+    //   buttonsStyling: false
+    // }).then((result) => {
+    // }
+    // );
   }
 
   setFormatCurrency(amt: string) {
+    debugger;
     amt = amt.replace(/[^\d\.\-\ ]/g, '');
     if (isNumeric(amt) === false) { return ''; };
     if (amt.length > 3) {

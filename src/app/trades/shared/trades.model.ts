@@ -2,7 +2,7 @@ export class Order {
     MemberRef: string;
     OrderRef: string;
     Type: string;
-    OrderSymbol: string;
+    Symbol: string;
     Price: number;
     PriceNow: number;
     Size: number;
@@ -18,6 +18,7 @@ export class Order {
     Status: string;
     Time: string;
     CloseDate: string;
+    CreateDate: string;
   }
   export class OrderTotalHistory {
     TotalText: string;
@@ -27,6 +28,14 @@ export class Order {
     Withdrawal: number;
     Balance: number;
     BalanceText: string;
+    constructor() {
+      this.ProfitLoss = 0;
+      this.Credit = 0;
+      this.Deposit = 0;
+      this.Withdrawal = 0;
+      this.Balance = 0;
+      this.BalanceText = '';
+    }
   }
   export class OrderTotal {
     TotalText: string;
@@ -37,4 +46,5 @@ export class Order {
     Margin: number;
     FreeMargin: number;
     MarginLevle: number;
+  // tslint:disable-next-line:eofline
   }

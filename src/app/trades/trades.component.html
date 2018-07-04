@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-header card-header-text" data-background-color="blue">
                         <h4>
-                            <strong>Sell/Buy</strong>
+                            <strong>Markets</strong>
                         </h4>
                     </div>
                     <div class="card-content text-center">
@@ -42,7 +42,6 @@
                         <div *ngIf="feedAsk != '' " class="card-header card-header-text div-bid">
                         </div>
                         -->
-
 
                         <div class="modal fade" id="noticeModalOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-notice">
@@ -72,7 +71,7 @@
                                                             <label class="control-label">Size</label>
                                                             <div class="input-group">
                                                                 <label class="control-label" data-error="Required field!"></label>
-                                                                <input class="form-control validate" style="text-align:center;font-size:30px" type="number" name="size" #size [(ngModel)]="txtSize"
+                                                                <input class="form-control validate" style="text-align:center;font-size:30px;font-stretch:extra-expanded;font-size-adjust:initial" type="number" name="size" #size [(ngModel)]="txtSize"
                                                                     required autocomplete="off" min="0.01" step="0.01" maxlength="4"
                                                                     (blur)="onSizeBlur(size.value)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode === 0">
                                                                 <span class="help-block"></span>
@@ -190,7 +189,7 @@
                                                                                 (blur)="onPlaceOrderBlur($event, Place.value)">
                                                                             <div style="min-height:40px">
                                                                                 <span class="category form-category text-center text-rose" *ngIf="
-                                                                                (selectPlaceOrderType.value == 'Buy' && Place.value > (feedAsk - 2) && Place.value < feedAsk) || 
+                                                                                (selectPlaceOrderType.value == 'Buy' && Place.value > (feedAsk - 2) && Place.value < feedAsk) ||
                                                                                 (selectPlaceOrderType.value == 'Sell' && Place.value < (feedBid - (-2)) && Place.value > feedBid) ||
                                                                                 Place.value == 0">*Invalid Price
                                                                                 </span>
@@ -282,7 +281,48 @@
                             </div>
                         </div>
 
-                        <div class="text-center">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="card-content" style="padding-top:50px">
+                                    <img class="img" style="width:100px;height:100px" src="../assets/img/goldbar.png">
+                                    <strong style="font-size:22px;padding-left:20px;">GOLD</strong>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="card-content">
+                                    <div class="text-center">
+                                        <input type="hidden" #hdSell [value]='feedBid'>
+                                        <button *ngIf="feedBid != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-lg">
+                                            <p style="font-size: 22px;text-align: left;color:black;font-weight:bold">Sell</p>
+                                            <div [class]="clsBtnBid">
+                                                <span [innerHTML]="feedBid.split('.')[0]" style="font-size:35px"></span>
+                                                .
+                                                <span [innerHTML]="feedBid.split('.')[1]" style="font-size:50px"></span>
+                                            </div>
+                                        </button>
+                                        <input type="hidden" #hdBuy [value]='feedAsk'>
+                                        <button *ngIf="feedAsk != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-lg">
+                                            <p style="font-size:22px;text-align:right;color:black;font-weight:bold">Buy</p>
+                                            <div [class]="clsBtnAsk">
+                                                <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:35px"></span>
+                                                .
+                                                <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:50px"></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="card-header" data-header-animation="false">
+                                    <div class="ct-chart" id="dailySalesChart"></div>
+                                </div>
+                                <!-- <div *ngIf="chart">
+                                    <canvas id="canvas">{{ chart }}</canvas>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <!-- <div class="text-center">
                             <input type="hidden" #hdSell [value]='feedBid'>
                             <button *ngIf="feedBid != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-lg">
                                 <p style="font-size: 18px; text-align: left">Sell</p>
@@ -301,7 +341,7 @@
                                     <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:50px"></span>
                                 </div>
                             </button>
-                        </div>
+                        </div> -->
                         <!-- <div class="input-group" style="margin:auto;">
                             <input class="form-control" style="width:60px;text-align:center;font-size:18px" type="number" #size number="true" min="0.01"
                                 (blur)="onBlur(size.value)" [(ngModel)]="txtSize" max="8.0" maxlength="4" value="0.01" step="0.01"
@@ -371,15 +411,15 @@
 
                                 <ng-template #buysell>
                                     <button type="button" matTooltip="Close #{{ item[0] }}" [matTooltipPosition]="'above'" class="btn btn-simple" data-toggle="modal"
-                                    data-target="#noticeModalClose">
-                                    <i class="material-icons" (click)="closeOrder = item">clear</i>
-                                </button>
+                                        data-target="#noticeModalClose">
+                                        <i class="material-icons" (click)="closeOrder = item">clear</i>
+                                    </button>
                                 </ng-template>
                                 <ng-template #limit>
                                     <button type="button" matTooltip="Delete #{{ item[0] }}" [matTooltipPosition]="'above'" class="btn btn-simple" data-toggle="modal"
-                                    data-target="#noticeModalDelete">
-                                    <i class="material-icons" (click)="closeOrder = item">clear</i>
-                                </button>
+                                        data-target="#noticeModalDelete">
+                                        <i class="material-icons" (click)="closeOrder = item">clear</i>
+                                    </button>
                                 </ng-template>
                             </td>
                         </tr>

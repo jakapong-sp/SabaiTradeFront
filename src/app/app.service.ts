@@ -18,12 +18,18 @@ export class AppService {
 
   constructor(private http: Http) {}
 
+  private handleError(error: any) {
+    // return Observable.throw(error.json() || 'Server Error');
+    debugger;
+    return Observable.throw('Server Error');
+}
+
   postDeposit(asset: Asset) {
     const memberref = JSON.parse(localStorage.getItem('profile')).memberref;
     const body = {
         MemberRef: memberref,
         AssetType: 'Deposit',
-        amountRequest: asset.amountRequest,
+        AmountRequest: asset.AmountRequest,
         createBy: memberref
     };
     const headerOptions = new Headers({ 'Content-Type': 'application/json' });
@@ -32,15 +38,16 @@ export class AppService {
     });
     return this.http
         .post(environment.url_static_api + '/api/assets', body, requestOptions)
-        .map(x => x.json());
+        .map(x => x.json()).catch(this.handleError);
 }
 
 postWithdraw(asset: Asset) {
+    debugger;
     const memberref = JSON.parse(localStorage.getItem('profile')).memberref;
     const body = {
         MemberRef: memberref,
         AssetType: 'Withdraw',
-        amountRequest: asset.amountRequest.replace(',', ''),
+        AmountRequest: asset.AmountRequest.replace(',', ''),
         createBy: memberref
     };
     const headerOptions = new Headers({ 'Content-Type': 'application/json' });

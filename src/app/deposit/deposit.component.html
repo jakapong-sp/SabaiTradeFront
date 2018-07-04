@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <form class="form-horizontal" #depositForm="ngForm" (ngSubmit)="OnSubmit(depositForm)">
+                    <form class="form-horizontal" #depositForm="ngForm">
                         <div class="card-header card-header-text" data-background-color="blue">
                             <h4 class="card-title">Deposit</h4>
                         </div>
@@ -13,9 +13,9 @@
                                 <div class="col-sm-2">
                                     <div class="form-group label-floating is-empty">
                                         <label class="control-label" data-error="Required field!"></label>
-                                        <input class="form-control validate" style="text-align:center;font-size:30px" type="text" placeholder="Amount" name="amountRequest"
-                                        #amountRequest="ngModel" [(ngModel)]="asset.amountRequest" required autocomplete="off"
-                                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.ctrlKey == true" (keyup)="asset.amountRequest=setFormatCurrency(amountRequest.value)">
+                                        <input class="form-control validate" style="text-align:center;font-size:30px" type="text" placeholder="Amount" name="AmountRequest"
+                                        #AmountRequest="ngModel" [(ngModel)]="asset.AmountRequest" required autocomplete="off"
+                                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.ctrlKey == true" (keyup)="asset.AmountRequest=setFormatCurrency(AmountRequest.value)">
                                         <!-- <span class="help-block">minimum 1000 $</span> 
                                          (keyup)="onKeyup($event)"
                                         -->
@@ -23,21 +23,33 @@
                                 </div>
                                 <label class="col-sm-1 label-on-right">USD</label>
                             </div>
-                            <!-- <div class="row">
-                                <label class="col-sm-2 label-on-left"></label>
-                                <div class="col-sm-8">
-                                    <div class="form-group label-floating is-empty">
-                                        <input class="form-control validate" type="text" placeholder="Amount" name="amountRequest" #amountRequest="ngModel" [(ngModel)]="asset.amountRequest" required>
-                                        <label data-error="Required field!"></label>
-                                        <span class="help-block">A block of help text that breaks onto a new line.</span>
+                            <div class="modal fade" id="noticeModalSubmit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-notice">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-center">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <i class="material-icons">clear</i>
+                                            </button>
+                                            <h3 class="modal-title" id="myModalLabel">Do you want to deposit?</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="instruction h4 text-center">
+                                                <p>
+                                                    fund your account {{ asset.AmountRequest }} USD
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer text-right">
+                                            <button type="submit" class="btn btn-info btn-lg" data-dismiss="modal" (click)="OnSubmit(depositForm)" style="width:100px">OK</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                             <br>
                             <div class="row">
                                 <label class="col-sm-2 label-on-left"></label>
                                 <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-fill btn-info" [disabled]="!depositForm.valid">Submit</button>
+                                    <button type="button" class="btn btn-fill btn-info" [disabled]="!depositForm.valid" data-toggle="modal" data-target="#noticeModalSubmit">Submit</button>
                                 </div>
                             </div>
                         </div>

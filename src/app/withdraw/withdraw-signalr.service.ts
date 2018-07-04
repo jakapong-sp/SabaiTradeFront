@@ -41,8 +41,8 @@ export class WithdrawSignalRService {
                 this.withdrawMessageHub.on('WithdrawAdded',
                     data => {
                         const asset = new Asset();
-                        asset.assetRef = data.assetRef;
-                        asset.amountRequest = data.amountRequest;
+                        asset.AssetRef = data.AssetRef;
+                        asset.AmountRequest = data.AmountRequest;
 
                         this.withdrawAdded(asset);
                     });
