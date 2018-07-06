@@ -86,35 +86,60 @@ export class LoginComponent implements OnInit {
     });
   }
   login(): void {
+    // this.ps
+    //   .getLogin(this.loginForm.value.email, this.loginForm.value.password)
+    //   .subscribe(member => {
+    //     debugger;
+    //     if (member === null) {
+    //       this.errorMsg = 'email or password is not correct';
+    //       this.isError = true;
+    //     } else {
+    //       if (member.verify === false) {
+    //         this.errorMsg = 'email or password is not correct';
+    //         this.isError = true;
+    //       } else if (member.active === false) {
+    //         this.router.navigate(['/pages/member-review/' + member.memberRef]);
+    //       } else {
+    //         const data = {
+    //           userid: member.memberRef,
+    //           memberref: member.memberRef,
+    //           email: member.email,
+    //           firstname: member.firstName,
+    //           lastname: member.lastName,
+    //           role: 'Admin'
+    //         };
+    //         localStorage.setItem('profile', JSON.stringify(data));
+    //         localStorage.setItem('logined', 'true');
+    //         this.router.navigate(['/trades']);
+    //       }
+    //     }
+    //   }, error => (this.errorMsg = <any>error));
     this.ps
-      .getLogin(this.loginForm.value.email, this.loginForm.value.password)
-      .subscribe(member => {
-        debugger;
-        if (member === null) {
+    .loginMember(this.loginForm.value.email, this.loginForm.value.password)
+    .subscribe(member => {
+      if (member === null) {
+        this.errorMsg = 'email or password is not correct';
+        this.isError = true;
+      } else {
+        if (member.Verify === false) {
           this.errorMsg = 'email or password is not correct';
           this.isError = true;
+        } else if (member.Active === false) {
+          this.router.navigate(['/pages/member-review/' + member.MemberRef]);
         } else {
-          if (member.verify === false) {
-            this.errorMsg = 'email or password is not correct';
-            this.isError = true;
-          } else if (member.active === false) {
-            this.router.navigate(['/pages/member-review/' + member.memberRef]);
-          } else {
-            const data = {
-              userid: member.memberRef,
-              memberref: member.memberRef,
-              email: member.email,
-              firstname: member.firstName,
-              lastname: member.lastName,
-              role: 'Admin'
-            };
-            localStorage.setItem('profile', JSON.stringify(data));
-            localStorage.setItem('logined', 'true');
-            this.router.navigate(['/trades']);
-          }
+          const data = {
+            userid: member.MemberRef,
+            memberref: member.MemberRef,
+            email: member.Email,
+            firstname: member.FirstName,
+            lastname: member.LastName,
+            role: 'Admin'
+          };
+          localStorage.setItem('profile', JSON.stringify(data));
+          localStorage.setItem('logined', 'true');
+          this.router.navigate(['/trades']);
         }
-      }, error => (this.errorMsg = <any>error));
-    // this.auth.emailLogin(this.loginForm.value.email, this.loginForm.value.password);
-    // console.log(localStorage.getItem('profile'));
+      }
+    }, error => (this.errorMsg = <any>error));   
   }
 }

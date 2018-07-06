@@ -134,4 +134,22 @@ export class PagesService {
       .catch(this.handleError);
   }
 
+    verifyMember(memberRef: string) {
+        const body = {
+            MemberRef: memberRef
+        };
+        const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+        const requestOptions = new RequestOptions({method: RequestMethod.Put, headers: headerOptions });
+        return this.http.put(environment.node_static_url + '/api/memberverify', body, requestOptions).map(x => x.json()).catch(this.handleError);
+    }
+    loginMember(email: string, password: string) {
+        const body = {
+            Email: email,
+            Password: password
+        };
+        const headerOptions = new Headers({ 'Content-Type': 'application/json' });
+        const requestOptions = new RequestOptions({method: RequestMethod.Post, headers: headerOptions });
+        return this.http.post(environment.node_static_url + '/api/memberlogin', body, requestOptions).map(x => x.json()).catch(this.handleError);
+    }
+   
 }

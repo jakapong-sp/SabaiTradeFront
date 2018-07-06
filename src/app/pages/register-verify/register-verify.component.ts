@@ -26,7 +26,7 @@ export class RegisterVerifyComponent implements OnInit {
     this.verifyPage = false;
     this.route.queryParams.subscribe(params => {
       const id = params['regKey'];
-      this.pages.putMemberVerify(id).subscribe(data => {
+      this.pages.verifyMember(id).subscribe(data => {
         debugger;
         if (data === null) {
           this.verifyPage = false;

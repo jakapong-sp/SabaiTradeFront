@@ -28,21 +28,6 @@
                         </h4>
                     </div>
                     <div class="card-content text-center">
-                        <!-- <p class="category">Sell/Buy</p> -->
-                        <!-- <h3 class='text-center'>
-                            <span #spBid [innerHTML]='feedBid' [style.color] = 'colorBid'></span>
-                            <span #spAsk [innerHTML]='feedAsk' [style.color] = 'colorAsk'></span>
-                        </h3> -->
-                        <!-- <div class="card-header card-header-text" data-background-color="orange">
-                        <h4 class="card-title">Employees Stats</h4>
-                        <p class="category">New employees on 15th September, 2016</p>
-                        </div>
-                        <div *ngIf="feedBid != '' " class="card-header card-header-text div-bid" data-background-color="blue">
-                        </div>
-                        <div *ngIf="feedAsk != '' " class="card-header card-header-text div-bid">
-                        </div>
-                        -->
-
                         <div class="modal fade" id="noticeModalOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-notice">
                                 <div class="modal-content">
@@ -281,72 +266,67 @@
                             </div>
                         </div>
 
+                        <input type="hidden" #hdSell [value]='feedBid'>
+                        <input type="hidden" #hdBuy [value]='feedAsk'>
+                        
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-12">
-                                <div class="card-content" style="padding-top:50px">
-                                    <img class="img" style="width:100px;height:100px" src="../assets/img/goldbar.png">
-                                    <strong style="font-size:22px;padding-left:20px;">GOLD</strong>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="card card-pricing card-plain">
+                                    <div class="card-content" style="padding-top:20px">
+                                        <img class="img" style="width:100px;height:100px" src="../assets/img/goldbar.png">
+                                        <strong style="font-size:22px;padding-left:20px;">GOLD</strong>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="card-content">
-                                    <div class="text-center">
-                                        <input type="hidden" #hdSell [value]='feedBid'>
-                                        <button *ngIf="feedBid != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-lg">
-                                            <p style="font-size: 22px;text-align: left;color:black;font-weight:bold">Sell</p>
-                                            <div [class]="clsBtnBid">
-                                                <span [innerHTML]="feedBid.split('.')[0]" style="font-size:35px"></span>
-                                                .
-                                                <span [innerHTML]="feedBid.split('.')[1]" style="font-size:50px"></span>
-                                            </div>
-                                        </button>
-                                        <input type="hidden" #hdBuy [value]='feedAsk'>
-                                        <button *ngIf="feedAsk != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-lg">
-                                            <p style="font-size:22px;text-align:right;color:black;font-weight:bold">Buy</p>
-                                            <div [class]="clsBtnAsk">
-                                                <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:35px"></span>
-                                                .
-                                                <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:50px"></span>
-                                            </div>
-                                        </button>
+                                <div class="card card-pricing card-plain">
+                                    <div class="card-content">
+                                        <div class="text-right">
+                                            <table align="center">
+                                                <tr>
+                                                    <td class="text-left">
+                                                        <span style="font-size:22px;color:black;font-weight:bold">Sell</span>   
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span style="font-size:22px;color:black;font-weight:bold">Buy</span>   
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <button *ngIf="feedBid != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-xs" style="border-style:solid;border-color:#505dd3">
+                                                            <div [class]="clsBtnBid">
+                                                                <span [innerHTML]="feedBid.split('.')[0]" style="font-size:35px"></span>
+                                                                .
+                                                                <span [innerHTML]="feedBid.split('.')[1]" style="font-size:50px"></span>
+                                                            </div>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button *ngIf="feedAsk != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-xs" style="border-style:solid;border-color:#505dd3">
+                                                            <div [class]="clsBtnAsk">
+                                                                <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:35px"></span>
+                                                                .
+                                                                <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:50px"></span>
+                                                            </div>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12">
-                                <div class="card-header" data-header-animation="false">
-                                    <div class="ct-chart" id="dailySalesChart"></div>
+                                <div class="card card-pricing card-plain">
+                                    <div class="card-content">
+                                        <div class="card-header" data-header-animation="false">
+                                            <div class="ct-chart" id="dailySalesChart"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- <div *ngIf="chart">
-                                    <canvas id="canvas">{{ chart }}</canvas>
-                                </div> -->
                             </div>
                         </div>
-
-                        <!-- <div class="text-center">
-                            <input type="hidden" #hdSell [value]='feedBid'>
-                            <button *ngIf="feedBid != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-lg">
-                                <p style="font-size: 18px; text-align: left">Sell</p>
-                                <div [class]="clsBtnBid">
-                                    <span [innerHTML]="feedBid.split('.')[0]" style="font-size:35px"></span>
-                                    .
-                                    <span [innerHTML]="feedBid.split('.')[1]" style="font-size:50px"></span>
-                                </div>
-                            </button>
-                            <input type="hidden" #hdBuy [value]='feedAsk'>
-                            <button *ngIf="feedAsk != '' " data-target="#noticeModalOrder" data-toggle="modal" class="btn btn-white btn-lg">
-                                <p style="font-size: 18px; text-align: right">Buy</p>
-                                <div [class]="clsBtnAsk">
-                                    <span [innerHTML]="feedAsk.split('.')[0]" style="font-size:35px"></span>
-                                    .
-                                    <span [innerHTML]="feedAsk.split('.')[1]" style="font-size:50px"></span>
-                                </div>
-                            </button>
-                        </div> -->
-                        <!-- <div class="input-group" style="margin:auto;">
-                            <input class="form-control" style="width:60px;text-align:center;font-size:18px" type="number" #size number="true" min="0.01"
-                                (blur)="onBlur(size.value)" [(ngModel)]="txtSize" max="8.0" maxlength="4" value="0.01" step="0.01"
-                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode === 0">
-                        </div> -->
+                        <!-- <div *ngIf="chart"><canvas id="canvas">{{ chart }}</canvas></div> -->
                     </div>
                 </div>
             </div>

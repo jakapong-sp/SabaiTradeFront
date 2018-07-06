@@ -43,10 +43,34 @@ router.get('/order', function(req, res) {
   });
 });
 
+
+router.get('/order/id/:id', function(req, res) {
+  mongoClient.connect(mongo_string, function(err, client) {
+    if (err) throw err;
+    console.log("history order member ref:" + req.params.id);
+    var db = client.db(mongo_db_name);
+    db
+      .collection('Orders')
+      .find({
+        $and: [
+          { Active: true },
+          { Status: 'Close'},
+          { MemberRef: req.params.id}
+        ]
+      })
+      .toArray(function(findErr, result) {
+        if (findErr) throw findErr;
+        console.log(result);
+        res.json(result);
+        client.close();
+      });
+  });
+});
+
 router.get('/asset/id/:id', function(req, res) {
   mongoClient.connect(mongo_string, function(err, client) {
     if (err) throw err;
-    console.log("history member ref:" + req.params.id);
+    console.log("history asset member ref:" + req.params.id);
     var db = client.db(mongo_db_name);
     db
       .collection('Assets')
@@ -168,8 +192,8 @@ router.post('/fileUpload/', function(req, res) {
   }
 });
 
-// Members
 
+// Members
 
 router.post('/member', function(req, res) {
   console.log(req.body);
@@ -188,19 +212,21 @@ router.post('/member', function(req, res) {
       req.body.Password = req.body.Password;
       req.body.Status = null;
       req.body.Verify = false;
-      req.body.Approve1Date = null;
+      req.body.Approve1Date = new Date();
       req.body.Approve1By = null;
-      req.body.Approve2Date = null;
+      req.body.Approve2Date = new Date();
       req.body.Approve2By = null;
       req.body.Active = true;
       req.body.CreateDate = new Date();
       req.body.CreateBy = null;
+      req.body.ImageBookBank = null;
+      req.body.ImagePassport = null;
       dbo.collection('Members').insertOne(req.body, function(err, result) {
         if (err) throw err;
         // Send Email
         let mailSubject = 'Sabai Plus Admin';
         const urlBody = urlMain + "/pages/register-verify?regKey=" + req.body.MemberRef;
-        const mailBody = "Hello,<br/>Follow this link to verify your email address.<br/>" + urlBody + "<br/>If you didn’t ask to verify this address, you can ignore this email.<br/>Thanks,<br/>Sabai Broker team";
+        const mailBody = "Hello,<br/>Follow this link to verify your email address.<br/>" + urlBody + "<br/>If you didn’t ask to verify this address, you can ignore this email.<br/>Thanks,<br/>Sabai Plus team";
         const mailOptions = {
           from: mailSender, // sender
           to: req.body.Email, // list of receivers
@@ -217,7 +243,6 @@ router.post('/member', function(req, res) {
             );
           }
         });
-
         console.log('1 document inserted (Register Member and Send Email)');
         const response = {
           result: 'ok',
@@ -228,6 +253,45 @@ router.post('/member', function(req, res) {
         db.close();
       });
     });
+  });
+});
+
+router.put('/memberverify', function(req, res) {
+  mongoClient.connect(mongo_string, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db(mongo_db_name);
+    var query = { MemberRef: req.body.MemberRef };
+    req.body.Verify = true;
+    console.log(req.body);
+    var newvalues = {
+      $set: req.body
+    };
+    dbo.collection('Members').updateOne(query, newvalues, function(err, result) {
+      if (err) throw err;
+      console.log('1 document updated (Verify Member');
+      const response = { result: 'ok', message: result.result.n + ' Updated' };
+      res.json(response);
+      db.close();
+    });
+  });
+});
+
+router.post('/memberlogin', function(req, res) {
+  mongoClient.connect(mongo_string, function(err, db) {
+    console.log(req.body.Email);
+    if (err) throw err;
+    var dbo = db.db(mongo_db_name);
+    dbo.collection('Members').findOne(
+      {
+        $and: [{ Email: req.body.Email }, { Password: req.body.Password }]
+      },
+      function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.json(result);
+        db.close();
+      }
+    );
   });
 });
 

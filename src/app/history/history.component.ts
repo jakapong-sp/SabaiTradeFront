@@ -163,6 +163,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
    `;
     });
     this.server.getHistoryOrders().subscribe(result => {
+      debugger;
       result.forEach(item => {
         if (item.Status === 'Close') {
           this.tableDataHis.dataRows.push([

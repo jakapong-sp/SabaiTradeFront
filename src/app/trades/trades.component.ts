@@ -32,6 +32,16 @@ class ChannelSubject {
     }
     .cls-price-up{
       color:blue;
+      border-width: 1cm;
+      border-color: #8064A2;
+    },
+    .cls-price-up:hover,
+    .cls-price-up:active,
+    .cls-price-up:visited,
+    .cls-price-up:focus {
+        background-color: #8064A2;
+        border-color: #8064A2;
+        border-style: solid
     }
     .cls-price-down{
       color:red;

@@ -90,14 +90,15 @@ export class ServerService {
   }
 
   getHistoryOrders(): Observable<Order[]> {
-    const body = {};
+    debugger;
+    const memberref = JSON.parse(localStorage.getItem('profile')).memberref;
     const headerOptions = new Headers({ 'Content-Type': 'application/json' });
     const requestOptions = new RequestOptions({
       method: RequestMethod.Get,
       headers: headerOptions
     });
     return this.http
-      .get(this.baseUrl + '/api/order', requestOptions)
+      .get(this.baseUrl + '/api/order/id/' + memberref, requestOptions)
       .map(res => res.json());
   }
 
